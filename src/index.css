@@ -1,0 +1,85 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid red;
+  height: 4rem;
+  width: 100%;
+}
+
+.navbar-center-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: auto;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  border: 1px solid red;
+  width: 100%;
+}
+
+.hamburger-menu {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* YT-STUDIO-LOGO */
+.img-yt-studio {
+  height: 1.7rem;
+  /* width: 2rem; */
+}
+
+.img-a-tag {
+  margin-right: 8rem;
+}
+
+.navbar-right-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* SEARCH-BAR */
+
+.search-bar {
+  outline: none;
+  font-size: 1rem;
+  height: auto;
+  padding: 6.5px;
+  margin-right: 15rem;
+  width: 34rem;
+}
+
+.help-button-div {
+  margin-right: 2rem;
+}
+
+.help-img {
+  color: black;
+  font-size: 1.6rem;
+}
+
+.create-button-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  height: 2rem;
+  width: 4rem;
+}
+
+.create-button {
+  color: black;
+  text-decoration: none;
+}
