@@ -124,7 +124,7 @@
 }
 
 .lower-section-items {
-  border: 2px solid red;
+  /* border: 2px solid red; */
   height: auto;
   overflow: hidden;
 }
@@ -145,6 +145,14 @@
   text-align: left;
   font-size: 1.2rem;
 }
+
+.items-ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .title-div {
   display: flex;
 }
@@ -167,7 +175,28 @@
 .upload-div {
   margin: 3.1rem;
   padding: 1rem;
-  border: 2px solid red;
+  border: 1px solid black;
   height: 25rem;
   width: 18rem;
+}
+
+/* LAYOUT */
+.content {
+  width: 100vw;
+  height: calc(100vh - 9rem);
+  display: flex;
+  border: 2px solid green;
+}
+
+.sidebar-div {
+  margin: 0;
+  border: 1px solid black;
+  width: 20rem;
+  height: calc(100vh - 11rem);
+}
+
+.outlet-div {
+  border: 2px solid red;
+  width: 100vw;
+  height: 100%;
 }

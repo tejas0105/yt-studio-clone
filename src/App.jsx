@@ -1,13 +1,18 @@
-import Home from "./components/Home";
-import Dashboard from "./components/Dashboard";
 import { Routes, Route } from "react-router-dom";
+
+import Dashboard from "./components/Dashboard";
+import Layout from "./components/Layout";
+import Content from "./components/Content";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/content" element={<Content />} />
+        </Route>
       </Routes>
     </>
   );

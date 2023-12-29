@@ -16,9 +16,13 @@ function Sidebar() {
       <section className="lower-section-items">
         <div className="items-div">
           <ul className="items-ul">
-            {/* <Link to="dashboard">Link</Link> */}
-            <li>Dashboard</li>
-            <li>Content</li>
+            <Link to="dashboard" className="dashboard-link">
+              Dashboard
+            </Link>
+            <Link to="content" className="content-link">
+              Content
+            </Link>
+            {/* <li>Dashboard</li> */}
             <li>Analytics</li>
             <li>Subtitles</li>
             <li>Copyright</li>
