@@ -1,4 +1,5 @@
 import profile_default from "./../assets/profile_default.svg";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
   return (
@@ -12,6 +13,18 @@ function Sidebar() {
         <p>YOUR CHANNEL NAME</p>
         <p>YOUR NAME</p>
       </div>
+      <section className="lower-section-items">
+        <div className="items-div">
+          <ul className="items-ul">
+            {/* <Link to="dashboard">Link</Link> */}
+            <li>Dashboard</li>
+            <li>Content</li>
+            <li>Analytics</li>
+            <li>Subtitles</li>
+            <li>Copyright</li>
+          </ul>
+        </div>
+      </section>
     </div>
   );
 }
