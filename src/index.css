@@ -201,12 +201,50 @@
 .dashboard-div{
   height: calc(100vh - 4rem);
 }
+
 .upload-div {
+  border-radius: 0.21rem;
   margin: 3.1rem;
-  padding: 1rem;
-  border: 1px solid black;
-  height: 25rem;
-  width: 18rem;
+  padding: 10px;
+  border: 1px solid rgb(205, 205, 205);
+  height: 28rem;
+  width: 20rem;
+}
+
+.inner-upload-div{
+  height: 100%;
+  width: 100%;
+  border: 1px dashed rgb(205, 205, 205);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.inner-upload-div > p:nth-of-type(2){
+  margin-top: 5px;
+}
+.inner-upload-div > p{
+  font-size: small;
+}
+
+.upload-btn{
+  border-radius: 0.21rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgb(47, 106, 255);
+  background-color: rgb(47, 106, 255);
+  height: 2.35rem;
+  width: 8.9rem;
+  color: white;
+  margin-top: 0.9rem;
+  text-decoration: none;
+  transition: 0.5s ease-in-out;
+}
+
+.upload-btn:active{
+  border: 1px solid rgb(96, 141, 255);
+  background-color: rgb(96, 141, 255);
 }
 
 /* LAYOUT */

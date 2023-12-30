@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const ref = useRef(null);
@@ -12,7 +13,9 @@ const Dashboard = () => {
       </div>
       <div className="info-content">
         <div className="upload-div">
-          <h3>upload videos</h3>
+          
+          <div className="inner-upload-div"><p>Want to see metrics on your recent video?</p>
+          <p>Upload and publish a video to get started.</p><Link className="upload-btn" to="/">UPLOAD VIDEOS</Link></div>
         </div>
       </div>
     </div>
