@@ -4,10 +4,15 @@ import { IoAdd } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 
 import yt_studio_logo from "./../assets/yt_studio_logo.svg";
+import { useEffect, useRef } from "react";
 
 function Navbar() {
+  const ref = useRef(null);
+  useEffect(()=>{
+    console.log(ref.current.clientHeight);
+  },[])
   return (
-    <div className="navbar">
+    <div className="navbar" ref={ref}>
       <div className="navbar-left-section">
         <div className="hamburger-div">
           <HiBars3 className="hamburger-menu" />
