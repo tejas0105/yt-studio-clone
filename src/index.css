@@ -161,25 +161,16 @@
   flex-direction: column;
 }
 
-.links{
-  cursor: pointer;
-  padding: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  transition: 0.2s ease-in-out;
-}
-
-.links:hover{
+.single-link:hover{
   background-color: rgb(239, 239, 239);
 }
 
-.links:active{
-  background-color: rgb(199, 199, 199);
+.single-link:active{
+  background-color: rgb(155, 155, 155);
 }
 
 .single-link{
+  font-weight: 900;
   display: flex;
   justify-content: center;
   align-items: center;

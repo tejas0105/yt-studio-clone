@@ -7,7 +7,7 @@ function Sidebar() {
   const navLinkStyles = ({isActive}) =>{
     return {
       color: isActive ? "red" : "black",
-      backgroundColor: isActive ? "rgb(239, 239, 239)":"white"
+      backgroundColor: isActive ? "rgb(239, 239, 239)":""
     }
   }
   return (
@@ -27,7 +27,7 @@ function Sidebar() {
             {links.map((item)=>{
               return (
                 <NavLink style={navLinkStyles} className="single-link" key={item.id} to={item.name}>{item.name}</NavLink>
-              )
+            )
             })}
           </ul>
         </div>
