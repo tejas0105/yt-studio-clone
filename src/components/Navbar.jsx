@@ -8,9 +8,10 @@ import { useEffect, useRef } from "react";
 
 function Navbar() {
   const ref = useRef(null);
-  useEffect(()=>{
+  useEffect(() => {
     console.log(ref.current.clientHeight);
-  },[])
+  }, []);
+
   return (
     <div className="navbar" ref={ref}>
       <div className="navbar-left-section">

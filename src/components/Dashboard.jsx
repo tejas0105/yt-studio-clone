@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const ref = useRef(null);
-  useEffect(()=>{
+  useEffect(() => {
     console.log(ref.current.clientHeight);
-  },[])
+  }, []);
   return (
     <div className="dashboard-div">
       <div className="title-div" ref={ref}>
@@ -13,10 +13,15 @@ const Dashboard = () => {
       </div>
       <div className="info-content">
         <div className="upload-div">
-          
-          <div className="inner-upload-div"><p>Want to see metrics on your recent video?</p>
-          <p>Upload and publish a video to get started.</p><Link className="upload-btn" to="/">UPLOAD VIDEOS</Link></div>
+          <div className="inner-upload-div">
+            <p>Want to see metrics on your recent video?</p>
+            <p>Upload and publish a video to get started.</p>
+            <Link className="upload-btn" to="/">
+              UPLOAD VIDEOS
+            </Link>
+          </div>
         </div>
+        <div className="analytics-div"></div>
       </div>
     </div>
   );
