@@ -7,7 +7,7 @@ import { CgProfile } from "react-icons/cg";
 
 import yt_studio_logo from "./../assets/yt_studio_logo.svg";
 
-function Navbar() {
+function Navbar({ data }) {
   return (
     <div className="navbar">
       <div className="navbar-left-section">
