@@ -1,19 +1,15 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { HiBars3 } from "react-icons/hi2";
 import { IoIosHelpCircleOutline } from "react-icons/io";
 import { IoAdd } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 
 import yt_studio_logo from "./../assets/yt_studio_logo.svg";
-import { useEffect, useRef } from "react";
 
 function Navbar() {
-  const ref = useRef(null);
-  useEffect(() => {
-    console.log(ref.current.clientHeight);
-  }, []);
-
   return (
-    <div className="navbar" ref={ref}>
+    <div className="navbar">
       <div className="navbar-left-section">
         <div className="hamburger-div">
           <HiBars3 className="hamburger-menu" />
@@ -42,6 +38,7 @@ function Navbar() {
         </div>
         <div className="current-user-div">
           <CgProfile className="current-user" />
+          {/* <img className="current-user" src={userData} alt="current-user" /> */}
         </div>
       </div>
     </div>

@@ -1,14 +1,10 @@
-import { useEffect, useRef } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  const ref = useRef(null);
-  useEffect(() => {
-    console.log(ref.current.clientHeight);
-  }, []);
   return (
     <div className="dashboard-div">
-      <div className="title-div" ref={ref}>
+      <div className="title-div">
         <h2 className="title">Channel Dashboard</h2>
       </div>
       <div className="info-content">

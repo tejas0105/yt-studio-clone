@@ -1,21 +1,15 @@
-import Dashboard from "./Dashboard";
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
+const getUrl = async () => {
+  const resp = await fetch("http://localhost:3000/request", { method: "post" });
+  const data = await resp.json();
+  console.log(data.url);
+};
 
 function Home() {
   return (
     <>
-      <div className="main">
-        <Navbar />
+      <div>
+        <button onClick={getUrl}>Sign in with Google</button>
       </div>
-      <section className="lower-section">
-        <div className="info-section">
-          <Sidebar />
-        </div>
-        <div className="right-info-section">
-          <Dashboard />
-        </div>
-      </section>
     </>
   );
 }
