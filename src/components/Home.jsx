@@ -7,7 +7,6 @@ function Home() {
       method: "get",
     });
     const data = await resp.json();
-    console.log(data.link);
     setUrl(data.link);
   };
 

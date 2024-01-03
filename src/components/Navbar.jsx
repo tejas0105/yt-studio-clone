@@ -3,11 +3,19 @@
 import { HiBars3 } from "react-icons/hi2";
 import { IoIosHelpCircleOutline } from "react-icons/io";
 import { IoAdd } from "react-icons/io5";
-import { CgProfile } from "react-icons/cg";
 
 import yt_studio_logo from "./../assets/yt_studio_logo.svg";
+import { useEffect, useState } from "react";
 
 function Navbar({ data }) {
+  const [img, setImg] = useState("");
+
+  useEffect(() => {
+    if (data && data.items && data.items[0]) {
+      setImg(data.items[0].snippet.thumbnails.default.url);
+    }
+  }, [data]);
+
   return (
     <div className="navbar">
       <div className="navbar-left-section">
@@ -37,8 +45,8 @@ function Navbar({ data }) {
           <IoAdd /> CREATE
         </div>
         <div className="current-user-div">
-          <CgProfile className="current-user" />
-          {/* <img className="current-user" src={userData} alt="current-user" /> */}
+          {/* <CgProfile className="current-user" /> */}
+          <img className="current-user" src={img} alt="current-user" />
         </div>
       </div>
     </div>
