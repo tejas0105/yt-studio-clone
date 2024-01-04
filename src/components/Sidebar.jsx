@@ -1,19 +1,20 @@
 /* eslint-disable react/prop-types */
 import { NavLink } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import links from "./links";
+import UserContext from "./context/UserContext";
 
-function Sidebar({ data }) {
+function Sidebar() {
   const [img, setImg] = useState("");
   const [name, setName] = useState("");
 
+  const { result } = useContext(UserContext);
+
   useEffect(() => {
-    if (data && data.items && data.items[0]) {
-      setImg(data.items[0].snippet.thumbnails.default.url);
-      setName(data.items[0].snippet.title);
-    }
-  }, [data]);
+    setImg(result?.items?.[0]?.snippet?.thumbnails?.default?.url);
+    setName(result?.items?.[0]?.snippet?.title);
+  }, [result]);
 
   const navLinkStyles = ({ isActive }) => {
     return {

@@ -3,18 +3,18 @@
 import { HiBars3 } from "react-icons/hi2";
 import { IoIosHelpCircleOutline } from "react-icons/io";
 import { IoAdd } from "react-icons/io5";
+import { useContext, useEffect, useState } from "react";
 
 import yt_studio_logo from "./../assets/yt_studio_logo.svg";
-import { useEffect, useState } from "react";
+import UserContext from "./context/UserContext";
 
-function Navbar({ data }) {
+function Navbar() {
+  const { result } = useContext(UserContext);
   const [img, setImg] = useState("");
 
   useEffect(() => {
-    if (data && data.items && data.items[0]) {
-      setImg(data.items[0].snippet.thumbnails.default.url);
-    }
-  }, [data]);
+    setImg(result?.items?.[0]?.snippet?.thumbnails?.default?.url);
+  }, [result]);
 
   return (
     <div className="navbar">
