@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .main {
@@ -12,6 +12,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.sign-in-with-google-div {
+  height: 100vh;
+  width: 100vw;
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sign-in-with-google-div > a {
+  border-radius: 4px;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 94, 255);
+  height: 3rem;
+  width: 13rem;
+  color: white;
 }
 
 .navbar {
@@ -237,6 +258,7 @@
 }
 
 .upload-btn {
+  font-size: smaller;
   border-radius: 0.21rem;
   display: flex;
   justify-content: center;
@@ -284,6 +306,7 @@
 }
 
 .channel-facts-div {
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   margin: 1rem 0 0 1rem;
@@ -303,7 +326,7 @@
   display: flex;
   flex-direction: column;
   /* border: 1px solid red; */
-  padding: 0.5rem 0 0 1.2rem;
+  padding: 0.5rem 1.2rem 0 1.2rem;
   width: 100%;
 }
 
@@ -312,6 +335,40 @@
 }
 
 .current-subscribers-number {
-  margin-top: 10px;
-  font-size: 2.5rem;
+  margin-top: 9.5px;
+  font-size: 2.3rem;
+}
+
+.divider {
+  color: rgb(205, 205, 205);
+  width: 100%;
+  margin-top: 2.6rem;
+}
+
+.summary-div {
+  margin: inherit;
+  margin-right: 1.5rem;
+}
+
+.days {
+  margin-top: 4px;
+  margin-bottom: 0.7rem;
+  font-size: 11.8px;
+}
+
+.views-summary-div {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.watch-time {
+  text-transform: capitalize;
+  font-size: small;
+}
+
+.views {
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+  font-size: small;
 }

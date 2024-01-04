@@ -15,7 +15,7 @@ function Home() {
   }, []);
   return (
     <>
-      <div>
+      <div className="sign-in-with-google-div">
         <a href={url} onClick={getUrl}>
           Sign in with Google
         </a>

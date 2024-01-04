@@ -34,9 +34,9 @@ const UserContextProvider = ({ children }) => {
     }
   }, [cookie]);
 
-  //   useEffect(() => {
-  //     console.log(result);
-  //   }, [result]);
+  // useEffect(() => {
+  //   console.log(result);
+  // }, [result]);
 
   return (
     <UserContext.Provider value={{ result, cookie }}>
