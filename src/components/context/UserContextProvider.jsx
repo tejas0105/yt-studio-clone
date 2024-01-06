@@ -22,7 +22,9 @@ const UserContextProvider = ({ children }) => {
       const fetchData = async () => {
         if (cookie) {
           const response = await fetch(
-            `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&mine=true&key=AIzaSyDALZrN9aPelGVgnPr1n9bJ1r_oAyGjbQ0`,
+            `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&mine=true&key=${
+              import.meta.env.VITE_API_KEY
+            }`,
             {
               headers: {
                 Authorization: `Bearer ${cookie}`,

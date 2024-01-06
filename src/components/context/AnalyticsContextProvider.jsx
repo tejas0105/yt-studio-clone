@@ -20,7 +20,9 @@ const AnalyticsContextProvider = ({ children }) => {
       const fetchData = async () => {
         if (cookie) {
           const resp = await fetch(
-            "https://youtubeanalytics.googleapis.com/v2/reports?dimensions=day&endDate=2024-01-04&ids=channel%3D%3DMINE&metrics=views&sort=day%2C-views&startDate=2023-12-07&key=AIzaSyDALZrN9aPelGVgnPr1n9bJ1r_oAyGjbQ0",
+            `https://youtubeanalytics.googleapis.com/v2/reports?dimensions=day&endDate=2024-01-04&ids=channel%3D%3DMINE&metrics=views&sort=day%2C-views&startDate=2023-12-07&key=${
+              import.meta.env.VITE_API_KEY
+            }`,
             {
               headers: {
                 Authorization: `Bearer ${cookie}`,
