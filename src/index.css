@@ -23,7 +23,16 @@
   align-items: center;
 }
 
+.sign-in-with-google-div > a:hover {
+  background-color: rgb(68, 121, 255);
+}
+
+.sign-in-with-google-div > a:active {
+  background-color: rgb(0, 51, 180);
+}
+
 .sign-in-with-google-div > a {
+  transition: 0.3s ease-in-out;
   border-radius: 4px;
   text-decoration: none;
   display: flex;

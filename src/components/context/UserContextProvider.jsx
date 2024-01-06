@@ -5,10 +5,16 @@ import UserContext from "./UserContext";
 const UserContextProvider = ({ children }) => {
   const [result, setResult] = useState([]);
   const [cookie, setCookie] = useState("");
+  const [playlist, setPlayList] = useState("");
+  const [videoList, setVideoList] = useState();
 
   useEffect(() => {
-    const cookies = document.cookie.split("=")[1];
-    setCookie(cookies);
+    if (document.cookie.split("=")[1].split(";")[0]) {
+      const cookies = document.cookie.split("=")[1].split(";")[0];
+      setCookie(cookies);
+    } else {
+      setCookie(undefined);
+    }
   }, []);
 
   useEffect(() => {
@@ -26,20 +32,44 @@ const UserContextProvider = ({ children }) => {
           );
           const data = await response.json();
           setResult(data);
+          setPlayList(
+            data?.items?.[0]?.contentDetails?.relatedPlaylists?.uploads
+          );
         }
       };
+
       fetchData();
     } catch (error) {
       console.log(error);
     }
   }, [cookie]);
 
+  useEffect(() => {
+    const fetchPlaylist = async () => {
+      if (result && cookie && playlist) {
+        const response2 = await fetch(
+          `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails&maxResults=25&playlistId=${playlist}&key=AIzaSyDALZrN9aPelGVgnPr1n9bJ1r_oAyGjbQ0`,
+          {
+            headers: {
+              Authorization: `Bearer ${cookie}`,
+              Accept: "application/json",
+            },
+          }
+        );
+        const data2 = await response2.json();
+        setVideoList(data2?.items);
+      }
+    };
+
+    fetchPlaylist();
+  }, [playlist, cookie, result]);
+
   // useEffect(() => {
-  //   console.log(result);
-  // }, [result]);
+  //   if (videoList) console.log(videoList);
+  // }, [videoList]);
 
   return (
-    <UserContext.Provider value={{ result, cookie }}>
+    <UserContext.Provider value={{ result, cookie, videoList }}>
       {children}
     </UserContext.Provider>
   );

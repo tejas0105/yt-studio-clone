@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App.jsx";
 import "./index.css";
+import "./content.css";
 import UserContextProvider from "./components/context/UserContextProvider.jsx";
 import AnalyticsContextProvider from "./components/context/AnalyticsContextProvider.jsx";
 

@@ -1,5 +1,5 @@
 const Error = () => {
-  return <div>Not authorised</div>;
+  return <div>Not authorized</div>;
 };
 
 export default Error;

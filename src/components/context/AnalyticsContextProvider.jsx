@@ -1,14 +1,19 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import AnalyticsContext from "./AnalyticsContext";
 
 const AnalyticsContextProvider = ({ children }) => {
   const [cookie, setCookie] = useState("");
-  const [result, setResult] = useState([]);
+  const [views, setViews] = useState([]);
 
   useEffect(() => {
-    const cookies = document.cookie.split("=")[1];
-    setCookie(cookies);
-  }, [cookie]);
+    if (document.cookie.split("=")[1].split(";")[0]) {
+      const cookies = document.cookie.split("=")[1].split(";")[0];
+      setCookie(cookies);
+    } else {
+      setCookie(undefined);
+    }
+  }, []);
 
   useEffect(() => {
     try {
@@ -23,8 +28,8 @@ const AnalyticsContextProvider = ({ children }) => {
               },
             }
           );
-          const data = resp.json();
-          setResult(data);
+          const data = await resp.json();
+          setViews(data);
         }
       };
       fetchData();
@@ -33,11 +38,15 @@ const AnalyticsContextProvider = ({ children }) => {
     }
   }, [cookie]);
 
-  useEffect(() => {
-    console.log(result);
-  }, [result]);
+  // useEffect(() => {
+  //   console.log(views);
+  // }, [views]);
 
-  return <AnalyticsContext.Provider>{children}</AnalyticsContext.Provider>;
+  return (
+    <AnalyticsContext.Provider value={{ views }}>
+      {children}
+    </AnalyticsContext.Provider>
+  );
 };
 
 export default AnalyticsContextProvider;

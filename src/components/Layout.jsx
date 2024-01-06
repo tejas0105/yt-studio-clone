@@ -7,12 +7,11 @@ import Error from "./Error Components/Error";
 import UserContext from "./context/UserContext";
 
 const Layout = () => {
-  const { cookie } = useContext(UserContext);
+  const { result } = useContext(UserContext);
 
-  if (!cookie) {
+  if (result?.error?.code === 401) {
     return <Error />;
   }
-
   return (
     <div className="layout">
       <div className="navbar-div">

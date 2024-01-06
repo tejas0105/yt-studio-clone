@@ -2,14 +2,36 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "./context/UserContext";
+import AnalyticsContext from "./context/AnalyticsContext";
 
 const Dashboard = () => {
-  const { result } = useContext(UserContext);
   const [subsCount, setSubCount] = useState("");
+  const [viewsCount, setViewsCount] = useState(0);
+
+  const { result } = useContext(UserContext);
+  const { views } = useContext(AnalyticsContext);
 
   useEffect(() => {
     setSubCount(result?.items?.[0]?.statistics?.subscriberCount);
-  }, [result]);
+    const viewsData = views?.rows;
+
+    const calculateViewsSum = (data) => {
+      if (data && data.length) {
+        let sum = 0;
+        for (let i = 0; i < data.length; i++) {
+          sum = sum + data[i][1];
+        }
+        setViewsCount(sum);
+        return sum;
+      }
+      return 0;
+    };
+    calculateViewsSum(viewsData);
+  }, [result, views]);
+
+  // useEffect(() => {
+  //   console.log(viewsCount);
+  // }, [viewsCount]);
 
   return (
     <div className="dashboard-div">
@@ -47,7 +69,7 @@ const Dashboard = () => {
                   <p className="watch-time">watch time (hours)</p>
                 </div>
                 <div className="values">
-                  <p className="views">11</p>
+                  <p className="views">{viewsCount}</p>
                   <p className="watch-time">0.1</p>
                 </div>
               </div>
