@@ -7,9 +7,16 @@ const AnalyticsContextProvider = ({ children }) => {
   const [views, setViews] = useState([]);
 
   useEffect(() => {
-    if (document.cookie.split("=")[1].split(";")[0]) {
-      const cookies = document.cookie.split("=")[1].split(";")[0];
-      setCookie(cookies);
+    const cookieValue = document.cookie;
+
+    if (cookieValue) {
+      const splitCookie = cookieValue.split("=");
+      if (splitCookie > 1) {
+        const cookies = splitCookie[1].split(";")[0];
+        setCookie(cookies);
+      } else {
+        setCookie(undefined);
+      }
     } else {
       setCookie(undefined);
     }
