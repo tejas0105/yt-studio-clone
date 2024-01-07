@@ -13,12 +13,10 @@ const UserContextProvider = ({ children }) => {
 
     if (cookieValue) {
       const splitCookie = cookieValue.split("=");
-      if (splitCookie > 1) {
-        const cookies = splitCookie[1].split(";")[0];
-        setCookie(cookies);
-      } else {
-        setCookie(undefined);
-      }
+
+      const cookies = splitCookie[1].split(";")[0];
+
+      setCookie(cookies);
     } else {
       setCookie(undefined);
     }
