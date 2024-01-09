@@ -191,21 +191,23 @@ const Content = () => {
                       {view && view.length > 0 ? (
                         <p className="view-count">{view[index]}</p>
                       ) : (
-                        <p className="view-count">no view</p>
+                        <p className="view-count">Loading...</p>
                       )}
                     </div>
                     <div className="comment-count-div">
                       {view && view.length > 0 ? (
                         <p className="comment-count">{comment[index]}</p>
                       ) : (
-                        <p className="comment-count">no commentsw</p>
+                        <p className="comment-count">Loading...</p>
                       )}
                     </div>
                     <div className="ratio-div">
                       {percent && percent.length > 0 ? (
                         <div>
                           <p className="ratio">
-                            {percent[index] !== 0 ? `${percent[index]}%` : "--"}
+                            {percent[index] !== 0
+                              ? `${Math.ceil(percent[index])}%`
+                              : "--"}
                           </p>
                           <p className="likes">
                             {engagement[index]?.likes !== "0"
@@ -227,7 +229,7 @@ const Content = () => {
                           </p>
                         </div>
                       ) : (
-                        <p className="ratio">no ratio</p>
+                        <p className="ratio">Loading...</p>
                       )}
                     </div>
                   </div>
