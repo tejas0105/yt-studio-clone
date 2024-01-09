@@ -7,6 +7,21 @@ const Content = () => {
   const [view, setView] = useState("");
   const [comment, setComment] = useState("");
   const [formattedDate, setFormattedDate] = useState([]);
+  const [engagement, setEngagement] = useState();
+  const [percent, setPercent] = useState([]);
+
+  const ratioPercent = (likes, dislikes) => {
+    if (
+      isNaN(likes) ||
+      isNaN(dislikes) ||
+      likes === undefined ||
+      dislikes === undefined ||
+      likes + dislikes === 0
+    ) {
+      return 0;
+    }
+    return (likes / (likes + dislikes)) * 100;
+  };
 
   useEffect(() => {
     if (viewCount) {
@@ -21,10 +36,44 @@ const Content = () => {
   }, [viewCount]);
 
   useEffect(() => {
-    if (view && view.length > 0) {
-      console.log(view);
+    if (viewCount?.items && viewCount?.items.length > 0) {
+      const comments = viewCount?.items.map((item) => {
+        return item?.statistics?.commentCount;
+      });
+      setComment(comments);
     }
-  }, [view]);
+  }, [viewCount]);
+
+  useEffect(() => {
+    if (comment) {
+      console.log(comment);
+    }
+  }, [comment]);
+
+  useEffect(() => {
+    if (viewCount?.items && viewCount?.items.length > 0) {
+      const engagements = viewCount?.items.map((item) => {
+        return {
+          likes: item?.statistics?.likeCount,
+          dislikes: item?.statistics?.dislikeCount,
+        };
+      });
+      setEngagement(engagements);
+    }
+  }, [viewCount]);
+
+  useEffect(() => {
+    if (Array.isArray(engagement)) {
+      const percentages = engagement.map((item) => {
+        return ratioPercent(parseInt(item?.likes), parseInt(item?.dislikes));
+      });
+      setPercent((prevPercent) => [...prevPercent, ...percentages]);
+    }
+  }, [engagement]);
+
+  useEffect(() => {
+    console.log(percent);
+  }, [percent]);
 
   useEffect(() => {
     setDate(
@@ -146,9 +195,21 @@ const Content = () => {
                     </div>
                     <div className="comment-count-div">
                       {view && view.length > 0 ? (
-                        <p className="comment-count">{view[index]}</p>
+                        <p className="comment-count">{comment[index]}</p>
                       ) : (
                         <p className="comment-count">no commentsw</p>
+                      )}
+                    </div>
+                    <div className="ratio-div">
+                      {percent && percent.length > 0 ? (
+                        <div>
+                          <p className="ratio">
+                            {percent[index] !== 0 ? `${percent[index]}%` : "--"}
+                          </p>
+                          <p className="likes"></p>
+                        </div>
+                      ) : (
+                        <p className="ratio">no ratio</p>
                       )}
                     </div>
                   </div>
