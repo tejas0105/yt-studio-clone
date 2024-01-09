@@ -1,9 +1,7 @@
+import { Button } from "@/components/ui/button";
+
 const Analytics = () => {
-  return (
-    <div>
-      <h2>This is Analytics page</h2>
-    </div>
-  );
+  return <Button variant="outline">Button</Button>;
 };
 
 export default Analytics;

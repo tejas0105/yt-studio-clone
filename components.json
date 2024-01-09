@@ -5,10 +5,10 @@
   "tsx": false,
   "tailwind": {
     "config": "tailwind.config.js",
-    "css": "tailwind.config.js",
+    "css": "src/globals.css",
     "baseColor": "slate",
     "cssVariables": true,
-    "prefix": "y"
+    "prefix": ""
   },
   "aliases": {
     "components": "@/components",
