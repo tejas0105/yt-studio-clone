@@ -154,11 +154,13 @@
 }
 
 .ratio {
+  text-align: right;
   font-size: small;
   padding: 0 0.5rem 0 0.5rem;
 }
 
 .likes {
+  text-align: right;
   font-size: smaller;
   padding: 0 0.5rem 0 0.5rem;
 }
