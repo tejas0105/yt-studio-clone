@@ -8,7 +8,7 @@ const UserContextProvider = ({ children }) => {
   const [playlist, setPlayList] = useState("");
   const [videoList, setVideoList] = useState();
   const [videoId, setVideoId] = useState([]);
-  const [viewCount, setViewCount] = useState();
+  const [viewCount, setViewCount] = useState([]);
 
   useEffect(() => {
     const cookieValue = document.cookie;
@@ -87,29 +87,30 @@ const UserContextProvider = ({ children }) => {
     }
   }, [videoList]);
 
-  const getData = async () => {
-    const response = await fetch(
-      `https://youtube.googleapis.com/youtube/v3/videos?part=statistics&id=Ks-_Mh1QhMc&key=${
-        import.meta.env.VITE_API_KEY
-      }`,
-      {
-        headers: {
-          Authorization: `Bearer ${cookie}`,
-          Accept: "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    setViewCount(data);
-  };
-
   useEffect(() => {
-    if (viewCount && viewCount.length > 0) {
-      console.log(viewCount);
+    if (videoId && videoId.length > 0) {
+      const newIDs = videoId.join("%2C");
+      const getData = async () => {
+        const response = await fetch(
+          `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${newIDs}&key=${
+            import.meta.env.VITE_API_KEY
+          }`,
+          {
+            headers: {
+              Authorization: `Bearer ${cookie}`,
+              Accept: "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        setViewCount(data);
+      };
+      getData();
     }
-  }, [viewCount]);
+  }, [cookie, videoId]);
+
   return (
-    <UserContext.Provider value={{ result, cookie, videoList }}>
+    <UserContext.Provider value={{ result, cookie, videoList, viewCount }}>
       {children}
     </UserContext.Provider>
   );

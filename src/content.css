@@ -112,3 +112,33 @@
   font-size: small;
   padding: 0 0.5rem 0 0.5rem;
 }
+
+.view-count-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgb(223, 221, 221);
+  height: 6.5rem;
+  width: 6.5rem;
+  text-align: left;
+}
+
+.view-count {
+  font-size: small;
+  padding: 0 0.5rem 0 0.5rem;
+}
+
+.comment-count-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgb(223, 221, 221);
+  height: 6.5rem;
+  width: 6.5rem;
+  text-align: left;
+}
+
+.comment-count {
+  font-size: small;
+  padding: 0 0.5rem 0 0.5rem;
+}

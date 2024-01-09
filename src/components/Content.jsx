@@ -2,13 +2,29 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from "./context/UserContext";
 
 const Content = () => {
-  const { videoList } = useContext(UserContext);
+  const { videoList, viewCount } = useContext(UserContext);
   const [date, setDate] = useState([]);
+  const [view, setView] = useState("");
+  const [comment, setComment] = useState("");
   const [formattedDate, setFormattedDate] = useState([]);
 
-  // useEffect(() => {
-  //   if (videoList) console.log(videoList);
-  // }, [videoList]);
+  useEffect(() => {
+    if (viewCount) {
+      console.log(viewCount);
+      if (viewCount?.items && viewCount?.items.length > 0) {
+        const views = viewCount?.items.map((item) => {
+          return item?.statistics?.viewCount;
+        });
+        setView(views);
+      }
+    }
+  }, [viewCount]);
+
+  useEffect(() => {
+    if (view && view.length > 0) {
+      console.log(view);
+    }
+  }, [view]);
 
   useEffect(() => {
     setDate(
@@ -122,10 +138,17 @@ const Content = () => {
                       <p className="publishedAt">{formattedDate[index]}</p>
                     </div>
                     <div className="view-count-div">
-                      {item?.status?.privacyStatus === "private" ? (
-                        <p className="view-count">0</p>
+                      {view && view.length > 0 ? (
+                        <p className="view-count">{view[index]}</p>
                       ) : (
-                        <p>view</p>
+                        <p className="view-count">no view</p>
+                      )}
+                    </div>
+                    <div className="comment-count-div">
+                      {view && view.length > 0 ? (
+                        <p className="comment-count">{view[index]}</p>
+                      ) : (
+                        <p className="comment-count">no commentsw</p>
                       )}
                     </div>
                   </div>
