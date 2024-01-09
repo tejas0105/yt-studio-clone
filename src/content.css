@@ -157,3 +157,14 @@
   font-size: small;
   padding: 0 0.5rem 0 0.5rem;
 }
+
+.likes {
+  font-size: smaller;
+  padding: 0 0.5rem 0 0.5rem;
+}
+
+.progress-bar {
+  /* background: rgb(0, 0, 0);
+  background-color: rgb(132, 132, 132); */
+  font-size: x-small;
+}

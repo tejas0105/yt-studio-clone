@@ -68,6 +68,7 @@ const Content = () => {
         return ratioPercent(parseInt(item?.likes), parseInt(item?.dislikes));
       });
       setPercent((prevPercent) => [...prevPercent, ...percentages]);
+      console.log(engagement);
     }
   }, [engagement]);
 
@@ -206,7 +207,24 @@ const Content = () => {
                           <p className="ratio">
                             {percent[index] !== 0 ? `${percent[index]}%` : "--"}
                           </p>
-                          <p className="likes"></p>
+                          <p className="likes">
+                            {engagement[index]?.likes !== "0"
+                              ? `${engagement[index]?.likes} ${
+                                  engagement[index]?.likes !== "1"
+                                    ? "likes"
+                                    : "like"
+                                }`
+                              : ""}
+                            {percent[index] === 0 || (
+                              <progress
+                                className="progress-bar"
+                                value={percent[index]}
+                                max="100"
+                              >
+                                {percent[index]}
+                              </progress>
+                            )}
+                          </p>
                         </div>
                       ) : (
                         <p className="ratio">no ratio</p>
