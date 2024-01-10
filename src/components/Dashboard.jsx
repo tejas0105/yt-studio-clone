@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "./context/UserContext";
@@ -35,11 +34,11 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-div h-[calc(100vh - 4rem)]">
-      <div className="title-div">
-        <h2 className="title">Channel Dashboard</h2>
+      <div className="title-div flex ">
+        <h2 className="title text-center mt-8 ml-8">Channel Dashboard</h2>
       </div>
-      <div className="info-content">
-        <div className="upload-div">
+      <div className="info-content flex h-[calc(100% - 62px)] overflow-auto">
+        <div className="upload-div rounded-md mt-4 mr-2 ml-8 border border-gray-300 p-3 h-96 w-80">
           <div className="inner-upload-div">
             <p>Want to see metrics on your recent video?</p>
             <p>Upload and publish a video to get started.</p>
