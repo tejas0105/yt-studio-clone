@@ -1,11 +1,8 @@
-import { Button } from "@/components/ui/button";
+// import "./../../src/globals.css";
+// import { Button } from "@/components/ui/button";
 
 const Analytics = () => {
-  return (
-    <div>
-      <Button>Click me</Button>
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Analytics;

@@ -24,19 +24,23 @@ function Sidebar() {
   };
   return (
     <div className="sidebar">
-      <div className="img-container">
-        <img className="pfp-default" src={img} alt="profile_default" />
+      <div className="img-container flex justify-center items-center flex-col h-56 relative bottom-6">
+        <img
+          className="pfp-default rounded-full h-28 w-28"
+          src={img}
+          alt="profile_default"
+        />
         <p>Your channel</p>
-        <p>{name}</p>
+        <p className="text-slate-500">{name}</p>
       </div>
-      <section className="lower-section-items">
-        <div className="items-div">
-          <ul className="items-ul">
+      <section className="lower-section-items h-auto overflow-hidden">
+        <div className="items-div flex justify-center items-center">
+          <ul className="items-ul w-full flex justify-center items-start flex-col">
             {links.map((item) => {
               return (
                 <NavLink
                   style={navLinkStyles}
-                  className="single-link"
+                  className="single-link font-black flex justify-center items-center h-11 mt-1 w-full capitalize text-slate-950 no-underline duration-300 ease-in-out hover:bg-gray-300 active:bg-gray-500"
                   key={item.id}
                   to={item.name}
                 >

@@ -34,7 +34,7 @@ const Dashboard = () => {
   // }, [viewsCount]);
 
   return (
-    <div className="dashboard-div">
+    <div className="dashboard-div h-[calc(100vh - 4rem)]">
       <div className="title-div">
         <h2 className="title">Channel Dashboard</h2>
       </div>

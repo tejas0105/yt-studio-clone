@@ -54,6 +54,10 @@ const UserContextProvider = ({ children }) => {
   }, [cookie]);
 
   useEffect(() => {
+    console.log(result);
+  }, [result]);
+
+  useEffect(() => {
     const fetchPlaylist = async () => {
       if (result && cookie && playlist) {
         const response2 = await fetch(

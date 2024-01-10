@@ -9,6 +9,9 @@ import Subtitles from "./components/Subtitles";
 import Copyright from "./components/Copyright";
 import Home from "./components/Home";
 
+import "./index2.css";
+import "./index.css";
+
 function App() {
   return (
     <>
