@@ -61,7 +61,7 @@ const UserContextProvider = ({ children }) => {
     const fetchPlaylist = async () => {
       if (result && cookie && playlist) {
         const response2 = await fetch(
-          `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=25&playlistId=${playlist}&key=${
+          `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=4&playlistId=${playlist}&key=${
             import.meta.env.VITE_API_KEY
           }`,
           {

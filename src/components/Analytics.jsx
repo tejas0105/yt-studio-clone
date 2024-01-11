@@ -1,8 +1,11 @@
-// import "./../../src/globals.css";
-// import { Button } from "@/components/ui/button";
+import Page from "./TableUI/Page";
 
 const Analytics = () => {
-  return <div></div>;
+  return (
+    <div>
+      <Page />
+    </div>
+  );
 };
 
 export default Analytics;
