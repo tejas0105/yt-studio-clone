@@ -53,9 +53,9 @@ const UserContextProvider = ({ children }) => {
     }
   }, [cookie]);
 
-  useEffect(() => {
-    console.log(result);
-  }, [result]);
+  // useEffect(() => {
+  //   console.log(result);
+  // }, [result]);
 
   useEffect(() => {
     const fetchPlaylist = async () => {

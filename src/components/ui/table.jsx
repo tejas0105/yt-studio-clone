@@ -67,15 +67,15 @@ const TableCell = React.forwardRef(({ className, ...props }, ref) => (
   <td
     ref={ref}
     className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
-    {...props?.row?.original?.video}
+    {...props}
   >
-    {/* <img src={props?.children?.props?.row?.original?.video} alt="" />
-    <p>{props?.children?.props?.row?.original?.restrictions}</p> */}
+    {/* <img
+      src={
+        "https://i9.ytimg.com/vi/OZRoMzL1YBE/default.jpg?sqp=CNicg60G&rs=AOn4CLBOk29fLWLoMwlHCQEJZM_fwB07IQ"
+      }
+    /> */}
   </td>
 ));
-// const TableCell = React.forwardRef(({ className, ...props }, ref) => {
-//   console.log(props?.children?.props?.row?.original?.restrictions);
-// });
 TableCell.displayName = "TableCell";
 
 const TableCaption = React.forwardRef(({ className, ...props }, ref) => (
