@@ -9,6 +9,7 @@ const UserContextProvider = ({ children }) => {
   const [videoList, setVideoList] = useState();
   const [videoId, setVideoId] = useState([]);
   const [viewCount, setViewCount] = useState([]);
+  const [nextPageToken, setNextPageToken] = useState("");
 
   useEffect(() => {
     const cookieValue = document.cookie;
@@ -60,8 +61,8 @@ const UserContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchPlaylist = async () => {
       if (result && cookie && playlist) {
-        const response2 = await fetch(
-          `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=4&playlistId=${playlist}&key=${
+        const playlistResponse = await fetch(
+          `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=4&pageToken=&playlistId=${playlist}&key=${
             import.meta.env.VITE_API_KEY
           }`,
           {
@@ -71,13 +72,21 @@ const UserContextProvider = ({ children }) => {
             },
           }
         );
-        const data2 = await response2.json();
-        setVideoList(data2?.items);
+        const playlistData = await playlistResponse.json();
+        setNextPageToken(playlistData?.nextPageToken);
+
+        setVideoList(playlistData?.items);
       }
     };
 
     fetchPlaylist();
   }, [playlist, cookie, result]);
+
+  // useEffect(() => {
+  //   if (videoList && videoList.length > 0) {
+  //     console.log(videoList);
+  //   }
+  // }, [videoList]);
 
   useEffect(() => {
     if (videoList && videoList.length > 0) {
@@ -114,7 +123,9 @@ const UserContextProvider = ({ children }) => {
   }, [cookie, videoId]);
 
   return (
-    <UserContext.Provider value={{ result, cookie, videoList, viewCount }}>
+    <UserContext.Provider
+      value={{ result, cookie, videoList, viewCount, nextPageToken }}
+    >
       {children}
     </UserContext.Provider>
   );
