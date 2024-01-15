@@ -18,7 +18,7 @@ export const columns = [
           <div className="img-div">
             <img src={url} />
           </div>
-          <div className="title-descript flex justify-center items-center flex-col">
+          <div className="title-descript">
             <a
               href={row?.original?.link}
               target="_blank"

@@ -10,6 +10,9 @@ const UserContextProvider = ({ children }) => {
   const [videoId, setVideoId] = useState([]);
   const [viewCount, setViewCount] = useState([]);
   const [nextPageToken, setNextPageToken] = useState("");
+  const [nextPageTokenToSend, setNextPageTokenToSend] = useState();
+  const [prevPageTokenToSend, setPrevPageTokenToSend] = useState();
+  const [prevPageToken, setPrevPageToken] = useState(null);
 
   useEffect(() => {
     const cookieValue = document.cookie;
@@ -54,15 +57,11 @@ const UserContextProvider = ({ children }) => {
     }
   }, [cookie]);
 
-  // useEffect(() => {
-  //   console.log(result);
-  // }, [result]);
-
   useEffect(() => {
     const fetchPlaylist = async () => {
       if (result && cookie && playlist) {
         const playlistResponse = await fetch(
-          `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=4&pageToken=${nextPageToken}&playlistId=${playlist}&key=${
+          `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=4&playlistId=${playlist}&key=${
             import.meta.env.VITE_API_KEY
           }`,
           {
@@ -73,20 +72,14 @@ const UserContextProvider = ({ children }) => {
           }
         );
         const playlistData = await playlistResponse.json();
-        setNextPageToken(playlistData?.nextPageToken);
 
         setVideoList(playlistData?.items);
+        setNextPageTokenToSend(playlistData?.nextPageToken);
       }
     };
 
     fetchPlaylist();
-  }, [playlist, cookie, result, nextPageToken]);
-
-  // useEffect(() => {
-  //   if (videoList && videoList.length > 0) {
-  //     console.log(videoList);
-  //   }
-  // }, [videoList]);
+  }, [playlist, cookie, result]);
 
   useEffect(() => {
     if (videoList && videoList.length > 0) {
@@ -122,9 +115,67 @@ const UserContextProvider = ({ children }) => {
     }
   }, [cookie, videoId]);
 
+  useEffect(() => {
+    const fetchDataNext = async () => {
+      if (result && cookie && playlist) {
+        const playlistResponse = await fetch(
+          `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=4&pageToken=${nextPageToken}&playlistId=${playlist}&key=${
+            import.meta.env.VITE_API_KEY
+          }`,
+          {
+            headers: {
+              Authorization: `Bearer ${cookie}`,
+              Accept: "application/json",
+            },
+          }
+        );
+        const playlistData = await playlistResponse.json();
+        setVideoList(playlistData?.items);
+        setNextPageTokenToSend(playlistData?.nextPageToken);
+        setPrevPageTokenToSend(playlistData?.prevPageToken);
+      }
+    };
+
+    fetchDataNext();
+  }, [result, cookie, playlist, nextPageToken]);
+
+  useEffect(() => {
+    const fetchPrevData = async () => {
+      if (nextPageToken && prevPageToken && result && cookie && playlist) {
+        const playlistResponse = await fetch(
+          `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=4&pageToken=${prevPageToken}&playlistId=${playlist}&key=${
+            import.meta.env.VITE_API_KEY
+          }`,
+          {
+            headers: {
+              Authorization: `Bearer ${cookie}`,
+              Accept: "application/json",
+            },
+          }
+        );
+        const playlistData = await playlistResponse.json();
+
+        setVideoList(playlistData?.items);
+        setNextPageTokenToSend(playlistData?.nextPageToken);
+        setPrevPageTokenToSend(playlistData?.prevPageToken);
+      }
+    };
+
+    fetchPrevData();
+  }, [result, cookie, playlist, prevPageToken, nextPageToken]);
+
   return (
     <UserContext.Provider
-      value={{ result, cookie, videoList, viewCount, nextPageToken }}
+      value={{
+        result,
+        cookie,
+        videoList,
+        viewCount,
+        setNextPageToken,
+        setPrevPageToken,
+        nextPageTokenToSend,
+        prevPageTokenToSend,
+      }}
     >
       {children}
     </UserContext.Provider>

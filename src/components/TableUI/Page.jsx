@@ -6,15 +6,18 @@ import UserContext from "../context/UserContext";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
 
 export default function Page() {
-  const { videoList, viewCount, nextPageToken } = useContext(UserContext);
+  const {
+    videoList,
+    viewCount,
+    nextPageTokenToSend,
+    prevPageTokenToSend,
+    setNextPageToken,
+    setPrevPageToken,
+  } = useContext(UserContext);
   const [data, setData] = useState([]);
   // const [nextPageToken, setNextPageToken] = useState("");
 
@@ -84,27 +87,62 @@ export default function Page() {
     }
   }, [videoList, viewCount?.items]);
 
-  useEffect(() => {
-    if (data) console.log(data);
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) console.log(data);
+  // }, [data]);
+
+  const handleNextPageToken = () => {
+    if (nextPageTokenToSend) {
+      setNextPageToken(nextPageTokenToSend);
+      setPrevPageToken(nextPageTokenToSend);
+    }
+  };
+
+  const handlePrevPageToken = () => {
+    if (prevPageTokenToSend) {
+      setNextPageToken(prevPageTokenToSend);
+      setPrevPageToken(prevPageTokenToSend);
+    }
+  };
 
   return (
     <div className="container mx-auto py-8">
       <DataTable columns={columns} data={data} />
       <Pagination>
         <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
+          <div className="">
+            {prevPageTokenToSend ? (
+              <button
+                className="mt-4  border p-2 rounded-md hover:bg-neutral-200 ease-in-out transition"
+                onClick={handlePrevPageToken}
+              >
+                Previous
+              </button>
+            ) : (
+              <button
+                disabled
+                className="mt-4 text-slate-400 border p-2 rounded-md ease-in-out transition"
+                onClick={handlePrevPageToken}
+              >
+                Previous
+              </button>
+            )}
+            {nextPageTokenToSend ? (
+              <button
+                className="mt-4 ml-1 border p-2 rounded-md hover:bg-neutral-200 ease-in-out transition"
+                onClick={handleNextPageToken}
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                className="mt-4 text-slate-400 border p-2 rounded-md ease-in-out transition"
+                onClick={handleNextPageToken}
+              >
+                Next
+              </button>
+            )}
+          </div>
         </PaginationContent>
       </Pagination>
     </div>
