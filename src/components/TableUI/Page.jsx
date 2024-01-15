@@ -1,25 +1,47 @@
 import { useContext, useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import UserContext from "../context/UserContext";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-} from "@/components/ui/pagination";
+import { Pagination, PaginationContent } from "@/components/ui/pagination";
 
 export default function Page() {
   const {
     videoList,
     viewCount,
-    nextPageTokenToSend,
-    prevPageTokenToSend,
-    setNextPageToken,
-    setPrevPageToken,
+    // nextPageTokenToSend,
+    // prevPageTokenToSend,
+    // setNextPageToken,
+    // setPrevPageToken,
   } = useContext(UserContext);
   const [data, setData] = useState([]);
   // const [nextPageToken, setNextPageToken] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(4);
+  const [pages, setPages] = useState([]);
+  const [pageNumber, setPageNumber] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    if (videoList && videoList.length > 0) {
+      const indexOfLastPage = currentPage * postsPerPage;
+      const indexOfFirstPage = indexOfLastPage - postsPerPage;
+      const currentVideos = videoList.slice(indexOfFirstPage, indexOfLastPage);
+      setPages(currentVideos);
+    }
+  }, [videoList, currentPage, postsPerPage]);
+
+  useEffect(() => {
+    if (videoList && videoList.length > 0) {
+      const pageNumberArray = [];
+      for (let i = 1; i <= Math.ceil(videoList.length / postsPerPage); i++) {
+        pageNumberArray.push(i);
+      }
+      setPageNumber(pageNumberArray);
+    }
+  }, [videoList, postsPerPage]);
 
   function convertDateFormat(intputDate) {
     const parts = intputDate.split("-");
@@ -53,12 +75,12 @@ export default function Page() {
 
   useEffect(() => {
     if (
-      videoList &&
-      videoList.length > 0 &&
+      pages &&
+      pages.length > 0 &&
       viewCount?.items &&
       viewCount?.items.length > 0
     ) {
-      const newData = videoList.map((item) => {
+      const newData = pages.map((item) => {
         const inputDate =
           item?.snippet?.publishedAt &&
           item?.snippet?.publishedAt.split("T")[0];
@@ -85,65 +107,61 @@ export default function Page() {
       });
       setData(newData);
     }
-  }, [videoList, viewCount?.items]);
+  }, [pages, viewCount?.items]);
 
   // useEffect(() => {
   //   if (data) console.log(data);
   // }, [data]);
 
-  const handleNextPageToken = () => {
-    if (nextPageTokenToSend) {
-      setNextPageToken(nextPageTokenToSend);
-      setPrevPageToken(nextPageTokenToSend);
-    }
+  const handleNextPage = () => {
+    setCurrentPage((prevState) => {
+      if (prevState > postsPerPage) return;
+      return prevState + 1;
+    });
   };
 
-  const handlePrevPageToken = () => {
-    if (prevPageTokenToSend) {
-      setNextPageToken(prevPageTokenToSend);
-      setPrevPageToken(prevPageTokenToSend);
-    }
+  const handlePrevPage = () => {
+    setCurrentPage((prevState) => {
+      if (prevState < 0) return;
+      return prevState - 1;
+    });
+  };
+
+  const changePage = (number) => {
+    setCurrentPage(number);
   };
 
   return (
     <div className="container mx-auto py-8">
       <DataTable columns={columns} data={data} />
       <Pagination>
+        <button
+          className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
+          onClick={handlePrevPage}
+        >
+          Prev
+        </button>
+        {pageNumber.map((item, index) => {
+          console.log(item);
+          return (
+            <NavLink
+              className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
+              key={index}
+              onClick={() => {
+                changePage(item);
+              }}
+            >
+              {item}
+            </NavLink>
+          );
+        })}
         <PaginationContent>
-          <div className="">
-            {prevPageTokenToSend ? (
-              <button
-                className="mt-4  border p-2 rounded-md hover:bg-neutral-200 ease-in-out transition"
-                onClick={handlePrevPageToken}
-              >
-                Previous
-              </button>
-            ) : (
-              <button
-                disabled
-                className="mt-4 text-slate-400 border p-2 rounded-md ease-in-out transition"
-                onClick={handlePrevPageToken}
-              >
-                Previous
-              </button>
-            )}
-            {nextPageTokenToSend ? (
-              <button
-                className="mt-4 ml-1 border p-2 rounded-md hover:bg-neutral-200 ease-in-out transition"
-                onClick={handleNextPageToken}
-              >
-                Next
-              </button>
-            ) : (
-              <button
-                disabled
-                className="mt-4 text-slate-400 border p-2 rounded-md ease-in-out transition"
-                onClick={handleNextPageToken}
-              >
-                Next
-              </button>
-            )}
-          </div>
+          <button
+            className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
+            onClick={handleNextPage}
+          >
+            Next
+          </button>
         </PaginationContent>
       </Pagination>
     </div>

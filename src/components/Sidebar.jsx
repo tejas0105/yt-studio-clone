@@ -22,6 +22,7 @@ function Sidebar() {
       backgroundColor: isActive ? "rgb(239, 239, 239)" : "",
     };
   };
+
   return (
     <div className="sidebar">
       <div className="img-container flex justify-center items-center flex-col h-56 relative bottom-6">
