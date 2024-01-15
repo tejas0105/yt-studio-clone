@@ -136,6 +136,7 @@ export default function Page() {
               </button>
             ) : (
               <button
+                disabled
                 className="mt-4 text-slate-400 border p-2 rounded-md ease-in-out transition"
                 onClick={handleNextPageToken}
               >
