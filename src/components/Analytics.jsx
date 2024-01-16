@@ -3,7 +3,7 @@ import Page from "./TableUI/Page";
 const Analytics = () => {
   return (
     <div>
-      <Page />
+      <h2>This is Analytics Page</h2>
     </div>
   );
 };
