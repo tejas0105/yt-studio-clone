@@ -18,7 +18,7 @@ export const columns = [
           <div className="img-div">
             <img src={url} />
           </div>
-          <div className="title-descript">
+          <div className=" ml-4 line-clamp-3 text-ellipsis w-96">
             <a
               href={row?.original?.link}
               target="_blank"
@@ -27,7 +27,7 @@ export const columns = [
             >
               {row?.original?.title}
             </a>
-            <p className="opacity-50">
+            <p className="opacity-50 ">
               {row?.original?.description
                 ? `${row?.original?.description}`
                 : "No description"}
