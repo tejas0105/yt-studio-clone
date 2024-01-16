@@ -7,9 +7,9 @@ import Error from "./Error Components/Error";
 import UserContext from "./context/UserContext";
 
 const Layout = () => {
-  const { result } = useContext(UserContext);
+  const { result, cookie } = useContext(UserContext);
 
-  if (result?.error?.code === 401) {
+  if (result?.error?.code === 401 || !cookie) {
     return <Error />;
   }
   return (
