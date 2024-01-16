@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
@@ -122,7 +122,7 @@ export default function Page() {
 
   const handlePrevPage = () => {
     setCurrentPage((prevState) => {
-      if (prevState < 0) return;
+      if (prevState <= 1) return;
       return prevState - 1;
     });
   };
@@ -135,33 +135,54 @@ export default function Page() {
     <div className="container mx-auto py-8">
       <DataTable columns={columns} data={data} />
       <Pagination>
-        <button
-          className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
-          onClick={handlePrevPage}
-        >
-          Prev
-        </button>
+        {currentPage === 1 ? (
+          <button
+            disabled
+            className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md text-gray-300"
+          >
+            Prev
+          </button>
+        ) : (
+          <button
+            className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
+            onClick={handlePrevPage}
+          >
+            Prev
+          </button>
+        )}
         {pageNumber.map((item, index) => {
           console.log(item);
           return (
-            <NavLink
-              className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
+            <Link
+              className={`pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 ${
+                currentPage === item ? "bg-neutral-200" : ""
+              } rounded-md hover:bg-neutral-200 ease-in-out transition`}
               key={index}
               onClick={() => {
                 changePage(item);
               }}
             >
               {item}
-            </NavLink>
+            </Link>
           );
         })}
         <PaginationContent>
-          <button
-            className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
-            onClick={handleNextPage}
-          >
-            Next
-          </button>
+          {currentPage === postsPerPage ? (
+            <button
+              disabled
+              className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md text-gray-300"
+              onClick={handleNextPage}
+            >
+              Next
+            </button>
+          ) : (
+            <button
+              className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
+              onClick={handleNextPage}
+            >
+              Next
+            </button>
+          )}
         </PaginationContent>
       </Pagination>
     </div>
