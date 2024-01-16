@@ -1,5 +1,3 @@
-import Page from "./TableUI/Page";
-
 const Analytics = () => {
   return (
     <div>
