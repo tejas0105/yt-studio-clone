@@ -2,8 +2,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { HiBars3 } from "react-icons/hi2";
 import { IoIosHelpCircleOutline } from "react-icons/io";
-import { IoAdd } from "react-icons/io5";
+// import { IoAdd } from "react-icons/io5";
 import { useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 import yt_studio_logo from "./../assets/yt_studio_logo.svg";
 import UserContext from "./context/UserContext";
@@ -46,8 +47,15 @@ function Navbar() {
         <div className="help-button-div">
           <IoIosHelpCircleOutline className="help-button text-2xl w-20 mr-2" />
         </div>
-        <div className="create-button-div flex justify-between items-center h-8 p-2 mr-5 border-slate-800 border">
-          <IoAdd /> CREATE
+        <div className="create-button-div flex justify-center items-center h-8 p-2 mr-5 border-slate-800 border w-44">
+          <button
+            onClick={() => {
+              Cookies.remove("token");
+              Cookies.remove("refresh_token");
+            }}
+          >
+            Log Out
+          </button>
         </div>
         <div className="current-user-div mr-7">
           {/* <CgProfile className="current-user" /> */}
