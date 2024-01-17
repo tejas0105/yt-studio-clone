@@ -155,7 +155,7 @@ export default function Page() {
           return (
             <Link
               className={`pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 ${
-                currentPage === item ? "bg-neutral-200" : ""
+                currentPage === item ? "bg-neutral-400" : ""
               } rounded-md hover:bg-neutral-200 ease-in-out transition`}
               key={index}
               onClick={() => {
