@@ -110,8 +110,9 @@ export default function Page() {
   }, [pages, viewCount?.items]);
 
   // useEffect(() => {
-  //   if (data) console.log(data);
-  // }, [data]);
+  //   if (viewCount) console.log("viewCount->", viewCount);
+  //   if (pages) console.log("pages->", pages);
+  // }, [viewCount, pages]);
 
   const handleNextPage = () => {
     setCurrentPage((prevState) => {
@@ -151,7 +152,6 @@ export default function Page() {
           </button>
         )}
         {pageNumber.map((item, index) => {
-          console.log(item);
           return (
             <Link
               className={`pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 ${

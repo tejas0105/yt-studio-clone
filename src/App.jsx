@@ -5,8 +5,7 @@ import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import Content from "./components/Content";
 import Analytics from "./components/Analytics";
-import Subtitles from "./components/Subtitles";
-import Copyright from "./components/Copyright";
+import Comments from "./components/Comments";
 import Home from "./components/Home";
 
 import "./index2.css";
@@ -21,8 +20,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/content" element={<Content />} />
           <Route path="/analytics" element={<Analytics />} />
-          <Route path="/subtitles" element={<Subtitles />} />
-          <Route path="/copyright" element={<Copyright />} />
+          <Route path="/comments" element={<Comments />} />
         </Route>
       </Routes>
     </>

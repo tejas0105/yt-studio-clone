@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import UserContext from "./UserContext";
 
+// eslint-disable-next-line react/prop-types
 const UserContextProvider = ({ children }) => {
   const [result, setResult] = useState([]);
   const [cookie, setCookie] = useState("");
@@ -57,9 +58,9 @@ const UserContextProvider = ({ children }) => {
     }
   }, [cookie]);
 
-  useEffect(() => {
-    console.log(result);
-  }, [result]);
+  // useEffect(() => {
+  //   console.log(result);
+  // }, [result]);
 
   useEffect(() => {
     const fetchPlaylist = async () => {
@@ -96,6 +97,10 @@ const UserContextProvider = ({ children }) => {
       );
     }
   }, [videoList]);
+
+  // useEffect(() => {
+  //   console.log(videoList);
+  // }, [videoList]);
 
   useEffect(() => {
     if (videoId && videoId.length > 0) {
