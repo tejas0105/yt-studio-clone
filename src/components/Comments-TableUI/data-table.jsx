@@ -49,13 +49,13 @@ export function DataTable({ columns, data }) {
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell) => {
+                {row.getVisibleCells().map((Cell) => {
                   // console.log(cell);
                   return (
-                    <TableCell key={cell.id}>
+                    <TableCell key={Cell.id}>
                       {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
+                        Cell.column.columnDef.cell,
+                        Cell.getContext()
                       )}
                     </TableCell>
                   );

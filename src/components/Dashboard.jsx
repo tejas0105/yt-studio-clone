@@ -33,7 +33,7 @@ const Dashboard = () => {
   // }, [viewsCount]);
 
   return (
-    <div className="dashboard-div h-[calc(100vh - 4rem)]">
+    <div className="dashboard-div h-[calc(100vh-4rem)]">
       <div className="title-div flex ">
         <h2 className="title text-center mt-8 ml-8">Channel Dashboard</h2>
       </div>
