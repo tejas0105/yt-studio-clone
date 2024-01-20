@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import CommentContext from "./context/CommentContext";
-import UserContext from "./context/UserContext";
+import CommentContext from "../context/CommentContext";
+import UserContext from "../context/UserContext";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 
