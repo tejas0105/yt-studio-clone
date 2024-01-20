@@ -88,11 +88,11 @@ const Comments = () => {
     fetchData();
   }, [comments]);
 
-  useEffect(() => {
-    if (commentsData && commentsData.length > 0) {
-      console.log(commentsData);
-    }
-  }, [commentsData]);
+  // useEffect(() => {
+  //   if (commentsData && commentsData.length > 0) {
+  //     console.log(commentsData);
+  //   }
+  // }, [commentsData]);
 
   return (
     <div className="comments-div overflow-auto h-[calc(100vh-4rem)]">
@@ -114,9 +114,13 @@ const Comments = () => {
             const matchedVideo = videoList.find(
               (v) => v?.contentDetails?.videoId === videoId
             );
+            console.log(matchedVideo);
             if (videoId === matchedVideo?.contentDetails?.videoId) {
               return (
-                <div key={item?.id} className="h-auto border-t">
+                <div
+                  key={item?.id}
+                  className="h-auto border-t flex items-center justify-between"
+                >
                   <div className="comment-div h-full flex items-start p-4">
                     <div className="img-div">
                       <img
@@ -274,7 +278,17 @@ const Comments = () => {
                         })}
                     </div>
                   </div>
-                  <div className="videos"></div>
+                  <div className="videos flex justify-center">
+                    <div className="image-div">
+                      <img
+                        src={matchedVideo?.snippet?.thumbnails?.default?.url}
+                        alt=""
+                      />
+                    </div>
+                    <div className="title-div">
+                      <a className="title">{matchedVideo?.snippet?.title}</a>
+                    </div>
+                  </div>
                 </div>
               );
             }
