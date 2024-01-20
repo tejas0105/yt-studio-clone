@@ -217,7 +217,7 @@ const Comments = () => {
                               key={reply?.id}
                               className="h-auto w-auto flex items-center p-3"
                             >
-                              <div className="repliy-img-div ml-2">
+                              <div className="reply-img-div ml-2">
                                 <img
                                   className="rounded-full"
                                   src={reply?.snippet?.authorProfileImageUrl}
@@ -278,15 +278,22 @@ const Comments = () => {
                         })}
                     </div>
                   </div>
-                  <div className="videos flex justify-center">
+                  <div className="videos flex w-96 items-start">
                     <div className="image-div">
                       <img
                         src={matchedVideo?.snippet?.thumbnails?.default?.url}
                         alt=""
                       />
                     </div>
-                    <div className="title-div">
-                      <a className="title">{matchedVideo?.snippet?.title}</a>
+                    <div className="title-div ml-3">
+                      <a
+                        href={`https://youtu.be/${matchedVideo?.contentDetails?.videoId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="title text-sm hover:underline"
+                      >
+                        {matchedVideo?.snippet?.title}
+                      </a>
                     </div>
                   </div>
                 </div>
