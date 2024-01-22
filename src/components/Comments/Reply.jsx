@@ -7,6 +7,7 @@ const Reply = ({
   handleReplyTextChange,
   postReply,
   setReplyText,
+  setEditingCommentIndex,
 }) => {
   return (
     <>
@@ -19,9 +20,14 @@ const Reply = ({
           />
         </div>
         <div className="reply-author-name-div flex flex-col ml-3">
-          <p className="reply-author-name text-sm opacity-65">
+          <a
+            href={reply?.snippet?.authorChannelUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="reply-author-name text-sm hover:text-blue-600 opacity-65"
+          >
             {reply?.snippet?.authorDisplayName}
-          </p>
+          </a>
           <p className="text-sm">{reply?.snippet?.textDisplay}</p>
 
           <button
@@ -51,6 +57,7 @@ const Reply = ({
                   onClick={() => {
                     postReply(reply?.snippet?.parentId);
                     setReplyText("");
+                    setEditingCommentIndex(null);
                   }}
                   className="ml-4"
                 >

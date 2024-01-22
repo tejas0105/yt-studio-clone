@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import Error from "./Error Components/Error";
+import Error from "./Error Components/NotAuthorized";
 import UserContext from "./context/UserContext";
 
 const Layout = () => {

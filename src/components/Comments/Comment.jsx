@@ -3,8 +3,11 @@ import CommentContext from "../context/CommentContext";
 import UserContext from "../context/UserContext";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Reply from "./Reply";
+import Videos from "./Videos";
+import Loading from "../Loading Components/Spinner";
+import ErrorComponent from "../Error Components/ErrorComponent";
 
 const Comment = () => {
   const { comments, fetchComments } = useContext(CommentContext);
@@ -13,6 +16,7 @@ const Comment = () => {
   const [editingCommentIndex, setEditingCommentIndex] = useState(null);
   const [repliesToggle, setRepliesToggle] = useState(null);
   const [replyText, setReplyText] = useState("");
+  const [replyData, setReplyData] = useState([]);
   const [commentsData, setCommentsData] = useState();
 
   const handleReplyClick = (id) => {
@@ -53,10 +57,22 @@ const Comment = () => {
       }
     );
     const data = await postData.json();
+    // setReplyData(data);
+    setCommentsData((previousData) => {
+      return [...previousData, data];
+    });
     console.log(parentId);
   };
 
-  const { isLoading, data: singleComment } = useQuery({
+  useEffect(() => {
+    if (replyData) console.log(replyData);
+  }, [replyData]);
+
+  const {
+    error,
+    isLoading,
+    data: singleComment,
+  } = useQuery({
     queryKey: ["singleCommentData", comments],
     queryFn: async () => {
       if (comments && comments.length > 0) {
@@ -76,19 +92,20 @@ const Comment = () => {
       setCommentsData(singleComment);
   }, [singleComment]);
 
-  // useEffect(() => {
-  //   if (commentsData && commentsData.length > 0) {
-  //     console.log(commentsData);
-  //   }
-  // }, [commentsData]);
+  useEffect(() => {
+    if (commentsData && commentsData.length > 0) {
+      console.log(commentsData);
+    }
+  }, [commentsData]);
 
   if (isLoading) {
-    return (
-      <div className="h-20 flex justify-center items-center">
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <Loading />;
   }
+
+  if (error) {
+    return <ErrorComponent />;
+  }
+
   return (
     <>
       {comments &&
@@ -121,13 +138,21 @@ const Comment = () => {
                       }
                     />
                   </div>
-                  <div className="name-comment ml-2 mt-1 flex flex-col justify-center">
-                    <p className="authorName text-sm mb-1 opacity-65">
+                  <div className="name-comment  ml-2 mt-1 flex flex-col justify-center">
+                    <a
+                      href={
+                        item?.snippet?.topLevelComment?.snippet
+                          ?.authorChannelUrl
+                      }
+                      target="_blank"
+                      rel="noreferrer"
+                      className="authorName text-sm mb-1 hover:text-blue-600 opacity-65"
+                    >
                       {
                         item?.snippet?.topLevelComment?.snippet
                           ?.authorDisplayName
                       }
-                    </p>
+                    </a>
                     <p className="comment text-sm">
                       {item?.snippet?.topLevelComment?.snippet?.textDisplay}
                     </p>
@@ -208,29 +233,13 @@ const Comment = () => {
                             handleReplyTextChange={handleReplyTextChange}
                             postReply={postReply}
                             setReplyText={setReplyText}
+                            setEditingCommentIndex={setEditingCommentIndex}
                           />
                         );
                       })}
                   </div>
                 </div>
-                <div className="videos flex w-96 items-start">
-                  <div className="image-div">
-                    <img
-                      src={matchedVideo?.snippet?.thumbnails?.default?.url}
-                      alt=""
-                    />
-                  </div>
-                  <div className="title-div ml-3">
-                    <a
-                      href={`https://youtu.be/${matchedVideo?.contentDetails?.videoId}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="title text-sm hover:underline"
-                    >
-                      {matchedVideo?.snippet?.title}
-                    </a>
-                  </div>
-                </div>
+                <Videos matchedVideo={matchedVideo} />
               </div>
             );
           }
