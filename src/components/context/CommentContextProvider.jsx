@@ -5,33 +5,34 @@ import { useQuery } from "@tanstack/react-query";
 
 const CommentContextProvider = ({ children }) => {
   const [comments, setComments] = useState([]);
+  // const [commentsData, setCommentsData] = useState([]);
   const { result, videoList } = useContext(UserContext);
   //   const fetchComments = async () => {
   //     const response = await fetch();
   //   };
-  const fetchComments = async (channelId, API_KEY) => {
+  const fetchCommentThreads = async (channelId, API_KEY) => {
     const response = await fetch(
       `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&allThreadsRelatedToChannelId=${channelId}&key=${API_KEY}`
     );
     return await response.json();
   };
 
-  const { data: commentData } = useQuery({
+  const { data: comment } = useQuery({
     queryKey: [
       "comments",
       result?.items?.[0]?.id,
       import.meta.env.VITE_API_KEY,
     ],
     queryFn: () =>
-      fetchComments(result?.items?.[0]?.id, import.meta.env.VITE_API_KEY),
+      fetchCommentThreads(result?.items?.[0]?.id, import.meta.env.VITE_API_KEY),
     enabled: !!result?.items?.[0]?.id && !!import.meta.env.VITE_API_KEY,
   });
 
   useEffect(() => {
-    if (commentData) {
-      setComments(commentData?.items);
+    if (comment) {
+      setComments(comment?.items);
     }
-  }, [result, commentData]);
+  }, [result, comment]);
 
   // useEffect(() => {
   //   console.log("Video details ->", videoList);
@@ -42,9 +43,18 @@ const CommentContextProvider = ({ children }) => {
   //     console.log("comments ->", comments);
   //   }
   // }, [comments]);
+  const fetchComments = async (parentId) => {
+    const response = await fetch(
+      `https://youtube.googleapis.com/youtube/v3/comments?part=snippet&parentId=${parentId}&key=${
+        import.meta.env.VITE_API_KEY
+      }`
+    );
+    const data = await response.json();
+    return data;
+  };
 
   return (
-    <CommentContext.Provider value={{ comments }}>
+    <CommentContext.Provider value={{ comments, fetchComments }}>
       {children}
     </CommentContext.Provider>
   );
