@@ -56,7 +56,7 @@ const Comment = () => {
     console.log(parentId);
   };
 
-  const { data: singleComment } = useQuery({
+  const { isLoading, data: singleComment } = useQuery({
     queryKey: ["singleCommentData", comments],
     queryFn: async () => {
       if (comments && comments.length > 0) {
@@ -81,6 +81,14 @@ const Comment = () => {
   //     console.log(commentsData);
   //   }
   // }, [commentsData]);
+
+  if (isLoading) {
+    return (
+      <div className="h-20 flex justify-center items-center">
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
   return (
     <>
       {comments &&
@@ -188,11 +196,11 @@ const Comment = () => {
                     {commentsData?.[index]?.items &&
                       commentsData?.[index]?.items.length > 0 &&
                       repliesToggle === item?.id &&
-                      commentsData?.[index]?.items.map((reply, index) => {
+                      commentsData?.[index]?.items.map((reply) => {
                         // console.log(reply?.snippet?.parentId);
                         return (
                           <Reply
-                            key={index}
+                            key={reply?.id}
                             reply={reply}
                             handleReplyClick={handleReplyClick}
                             editingCommentIndex={editingCommentIndex}
