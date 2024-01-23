@@ -3,7 +3,7 @@ import CommentContext from "../context/CommentContext";
 import UserContext from "../context/UserContext";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Reply from "./Reply";
 import Videos from "./Videos";
 import Loading from "../Loading Components/Spinner";
@@ -16,7 +16,6 @@ const Comment = () => {
   const [editingCommentIndex, setEditingCommentIndex] = useState(null);
   const [repliesToggle, setRepliesToggle] = useState(null);
   const [replyText, setReplyText] = useState("");
-  const [replyData, setReplyData] = useState([]);
   const [commentsData, setCommentsData] = useState([]);
 
   const handleReplyClick = (id) => {
@@ -31,30 +30,6 @@ const Comment = () => {
     setReplyText(e.target.value);
   };
 
-  // useEffect(() => {
-  //   if (comments && comments.length > 0 && videoList && videoList.length > 0)
-  //     console.log(comments);
-  // }, [comments, videoList]);
-
-  // useEffect(() => {
-  //   if (commentsData && commentsData.length > 0) {
-  //     setCommentsData((previousData) => {
-  //       return [...previousData, replyData];
-  //     });
-  //     // commentsData.map((item, index) => {
-  //     //   const newData = item?.items;
-  //     //   // console.log([...newData, replyData]);
-  //     // });
-  //   }
-  // }, [commentsData]);
-
-  // useEffect(() => {
-  //   if (commentsData) {
-  //     console.log("commentsData", commentsData);
-  //     console.log("replyData->", replyData);
-  //   }
-  // }, [commentsData, replyData]);
-
   const {
     error,
     isLoading,
@@ -63,21 +38,20 @@ const Comment = () => {
     queryKey: ["singleCommentData", comments],
     queryFn: async () => {
       if (comments && comments.length > 0) {
-        const data = [];
-        for (const comment of comments) {
+        const promises = comments.map(async (comment) => {
           const commentData = await fetchComments(comment?.id);
-          data.push(commentData);
-        }
-        return data;
+          return commentData;
+        });
+        return Promise.all(promises);
       }
       return [];
     },
   });
 
   useEffect(() => {
-    if (singleComment && singleComment.length > 0 && replyData)
+    if (singleComment && singleComment.length > 0)
       setCommentsData(singleComment);
-  }, [singleComment, replyData]);
+  }, [singleComment]);
 
   const postReply = async (parentId, index) => {
     const postData = await fetch(
@@ -101,30 +75,23 @@ const Comment = () => {
     );
     const data = await postData.json();
 
-    console.log(index);
-    setReplyData(data);
+    // console.log(index);
+    // queryClient.invalidateQueries(["singleCommentData", comments]);
+
     setCommentsData((previousData) => {
       const newData = [...previousData];
-      if (newData[index]?.items) {
-        newData[index].items = [...newData[index].items, data];
+      if (newData[index]) {
+        newData[index].items = newData[index].items
+          ? [...newData[index].items, data]
+          : [data];
       } else {
-        newData[index].items = [data];
+        newData[index] = { items: [data] };
       }
       return newData;
     });
 
     console.log(commentsData);
   };
-
-  // const setReply = (index) =>{
-  //   if(index === )
-  // }
-
-  useEffect(() => {
-    if (commentsData && commentsData.length > 0) {
-      // console.log(commentsData);
-    }
-  }, [commentsData]);
 
   if (isLoading) {
     return <Loading />;
@@ -236,7 +203,7 @@ const Comment = () => {
                           </button>
                           <button
                             onClick={() => {
-                              postReply(item?.id);
+                              postReply(item?.id, index);
                               setReplyText("");
                             }}
                             className="ml-4"
