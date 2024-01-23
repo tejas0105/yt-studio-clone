@@ -50,9 +50,10 @@ const Comment = () => {
 
   useEffect(() => {
     if (commentsData) {
-      console.log(commentsData?.[0]?.items);
+      console.log("commentsData", commentsData);
+      console.log("replyData->", replyData);
     }
-  }, [commentsData]);
+  }, [commentsData, replyData]);
 
   const {
     error,
@@ -78,7 +79,7 @@ const Comment = () => {
       setCommentsData(singleComment);
   }, [singleComment]);
 
-  const postReply = async (parentId) => {
+  const postReply = async (parentId, index) => {
     const postData = await fetch(
       `https://youtube.googleapis.com/youtube/v3/comments?part=snippet&key=${
         import.meta.env.VITE_API_KEY
@@ -100,11 +101,15 @@ const Comment = () => {
     );
     const data = await postData.json();
 
-    console.log(data);
-    setCommentsData([...commentsData, data]);
+    console.log(index);
+    setReplyData(data);
+    // setCommentsData([...commentsData, data]);
     // console.log(commentsData);
-    return data;
   };
+
+  // const setReply = (index) =>{
+  //   if(index === )
+  // }
 
   useEffect(() => {
     if (commentsData && commentsData.length > 0) {
@@ -239,6 +244,7 @@ const Comment = () => {
                         // console.log(reply?.snippet?.parentId);
                         return (
                           <Reply
+                            index={index}
                             key={reply?.id}
                             reply={reply}
                             handleReplyClick={handleReplyClick}

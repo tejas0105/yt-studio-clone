@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 const Reply = ({
+  index,
   reply,
   handleReplyClick,
   editingCommentIndex,
@@ -55,7 +56,7 @@ const Reply = ({
                 </button>
                 <button
                   onClick={() => {
-                    postReply(reply?.snippet?.parentId);
+                    postReply(reply?.snippet?.parentId, index);
                     setReplyText("");
                     setEditingCommentIndex(null);
                   }}
