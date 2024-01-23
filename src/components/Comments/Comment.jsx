@@ -17,7 +17,7 @@ const Comment = () => {
   const [repliesToggle, setRepliesToggle] = useState(null);
   const [replyText, setReplyText] = useState("");
   const [replyData, setReplyData] = useState([]);
-  const [commentsData, setCommentsData] = useState();
+  const [commentsData, setCommentsData] = useState([]);
 
   const handleReplyClick = (id) => {
     setEditingCommentIndex(id === editingCommentIndex ? null : id);
@@ -36,37 +36,23 @@ const Comment = () => {
   //     console.log(comments);
   // }, [comments, videoList]);
 
-  const postReply = async (parentId) => {
-    const postData = await fetch(
-      `https://youtube.googleapis.com/youtube/v3/comments?part=snippet&key=${
-        import.meta.env.VITE_API_KEY
-      }`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${cookie}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          snippet: {
-            parentId: parentId,
-            textOriginal: replyText,
-          },
-        }),
-      }
-    );
-    const data = await postData.json();
-    // setReplyData(data);
-    setCommentsData((previousData) => {
-      return [...previousData, data];
-    });
-    console.log(parentId);
-  };
+  // useEffect(() => {
+  //   if (commentsData && commentsData.length > 0) {
+  //     setCommentsData((previousData) => {
+  //       return [...previousData, replyData];
+  //     });
+  //     // commentsData.map((item, index) => {
+  //     //   const newData = item?.items;
+  //     //   // console.log([...newData, replyData]);
+  //     // });
+  //   }
+  // }, [commentsData]);
 
   useEffect(() => {
-    if (replyData) console.log(replyData);
-  }, [replyData]);
+    if (commentsData) {
+      console.log(commentsData?.[0]?.items);
+    }
+  }, [commentsData]);
 
   const {
     error,
@@ -92,9 +78,37 @@ const Comment = () => {
       setCommentsData(singleComment);
   }, [singleComment]);
 
+  const postReply = async (parentId) => {
+    const postData = await fetch(
+      `https://youtube.googleapis.com/youtube/v3/comments?part=snippet&key=${
+        import.meta.env.VITE_API_KEY
+      }`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${cookie}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          snippet: {
+            parentId: parentId,
+            textOriginal: replyText,
+          },
+        }),
+      }
+    );
+    const data = await postData.json();
+
+    console.log(data);
+    setCommentsData([...commentsData, data]);
+    // console.log(commentsData);
+    return data;
+  };
+
   useEffect(() => {
     if (commentsData && commentsData.length > 0) {
-      console.log(commentsData);
+      // console.log(commentsData);
     }
   }, [commentsData]);
 
