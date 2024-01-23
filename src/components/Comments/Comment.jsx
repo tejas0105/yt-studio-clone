@@ -48,12 +48,12 @@ const Comment = () => {
   //   }
   // }, [commentsData]);
 
-  useEffect(() => {
-    if (commentsData) {
-      console.log("commentsData", commentsData);
-      console.log("replyData->", replyData);
-    }
-  }, [commentsData, replyData]);
+  // useEffect(() => {
+  //   if (commentsData) {
+  //     console.log("commentsData", commentsData);
+  //     console.log("replyData->", replyData);
+  //   }
+  // }, [commentsData, replyData]);
 
   const {
     error,
@@ -75,9 +75,9 @@ const Comment = () => {
   });
 
   useEffect(() => {
-    if (singleComment && singleComment.length > 0)
+    if (singleComment && singleComment.length > 0 && replyData)
       setCommentsData(singleComment);
-  }, [singleComment]);
+  }, [singleComment, replyData]);
 
   const postReply = async (parentId, index) => {
     const postData = await fetch(
@@ -103,8 +103,17 @@ const Comment = () => {
 
     console.log(index);
     setReplyData(data);
-    // setCommentsData([...commentsData, data]);
-    // console.log(commentsData);
+    setCommentsData((previousData) => {
+      const newData = [...previousData];
+      if (newData[index]?.items) {
+        newData[index].items = [...newData[index].items, data];
+      } else {
+        newData[index].items = [data];
+      }
+      return newData;
+    });
+
+    console.log(commentsData);
   };
 
   // const setReply = (index) =>{
