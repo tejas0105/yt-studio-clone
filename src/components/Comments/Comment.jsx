@@ -205,6 +205,7 @@ const Comment = () => {
                             onClick={() => {
                               postReply(item?.id, index);
                               setReplyText("");
+                              setEditingCommentIndex(null);
                             }}
                             className="ml-4"
                           >
