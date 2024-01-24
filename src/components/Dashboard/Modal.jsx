@@ -44,6 +44,7 @@ const Modal = ({ isOpen, onClose }) => {
               <input
                 type="file"
                 ref={fileInputRef}
+                accept="video/mp4"
                 style={{ display: "none" }}
                 onChange={handleFileChange}
               />
