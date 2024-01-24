@@ -2,7 +2,7 @@
 const Videos = ({ matchedVideo }) => {
   return (
     <>
-      <div className="videos flex w-96 border items-start">
+      <div className="videos flex w-96 items-start">
         <div className="image-div">
           <img src={matchedVideo?.snippet?.thumbnails?.default?.url} alt="" />
         </div>

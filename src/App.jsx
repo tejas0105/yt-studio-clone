@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Routes, Route } from "react-router-dom";
 
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/Dashboard/Dashboard";
 import Layout from "./components/Layout";
 import Content from "./components/Content";
 import Analytics from "./components/Analytics";

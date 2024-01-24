@@ -3,7 +3,7 @@ import CommentContext from "../context/CommentContext";
 import UserContext from "../context/UserContext";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import Reply from "./Reply";
 import Videos from "./Videos";
 import Loading from "../Loading Components/Spinner";
@@ -75,22 +75,15 @@ const Comment = () => {
     );
     const data = await postData.json();
 
-    // console.log(index);
-    // queryClient.invalidateQueries(["singleCommentData", comments]);
-
     setCommentsData((previousData) => {
       const newData = [...previousData];
-      if (newData[index]) {
-        newData[index].items = newData[index].items
-          ? [...newData[index].items, data]
-          : [data];
+      if (newData[index]?.items) {
+        newData[index].items = [...newData[index].items, data];
       } else {
-        newData[index] = { items: [data] };
+        newData[index].items = [data];
       }
       return newData;
     });
-
-    console.log(commentsData);
   };
 
   if (isLoading) {
@@ -204,6 +197,7 @@ const Comment = () => {
                           <button
                             onClick={() => {
                               postReply(item?.id, index);
+                              // mutation.mutate(item?.id, index);
                               setReplyText("");
                               setEditingCommentIndex(null);
                             }}
