@@ -21,6 +21,7 @@
     "clsx": "^2.1.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
+    "fs": "^0.0.1-security",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.307.0",
     "nanoid": "^5.0.4",

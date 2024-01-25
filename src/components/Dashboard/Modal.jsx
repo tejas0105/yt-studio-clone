@@ -3,20 +3,54 @@ import ReactDom from "react-dom";
 import { IoCloseOutline } from "react-icons/io5";
 import { RiFeedbackLine } from "react-icons/ri";
 import { MdFileUpload } from "react-icons/md";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Modal = ({ isOpen, onClose }) => {
+  const [file, setFile] = useState();
+  const [fileData, setFileData] = useState();
   const fileInputRef = useRef(null);
 
   const handleFileSelect = () => {
     fileInputRef.current.click();
   };
 
+  const uploadFile = async () => {
+    if (file) {
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const postFile = await fetch("http://localhost:3000/upload", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await postFile.json();
+        setFileData(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  };
+
   const handleFileChange = (e) => {
     const selectedFiles = e.target.files[0];
-    // Process the selected files as needed
+    setFile(selectedFiles);
+    if (file) uploadFile();
     console.log("Selected Files:", selectedFiles);
   };
+
+  useEffect(() => {
+    if (file) {
+      uploadFile();
+      onClose();
+    }
+  }, [file]);
+
+  useEffect(() => {
+    if (fileData) {
+      console.log(fileData);
+    }
+  }, [fileData]);
+
   if (!isOpen) return null;
   return ReactDom.createPortal(
     <>
@@ -46,7 +80,9 @@ const Modal = ({ isOpen, onClose }) => {
                 ref={fileInputRef}
                 accept="video/mp4"
                 style={{ display: "none" }}
-                onChange={handleFileChange}
+                onChange={(e) => {
+                  handleFileChange(e);
+                }}
               />
             </div>
             <h2 className="mt-5 text-sm">Click above to select files</h2>
