@@ -63,7 +63,7 @@ const Modal = ({ isOpen, onClose }) => {
         className="overlay transition duration-500 ease-in-out fixed top-0 left-0 right-0 bottom-0 z-[1000] bg-modalColor"
       />
       <div className="modal-container transition duration-500 ease-in-out fixed top-2/4 left-2/4 z-[1000] -translate-y-1/2 -translate-x-1/2">
-        {fileData?.status === 200 &&}
+        {/* {fileData?.status === 200 &&} */}
         <div className="modal bg-white h-[33rem] w-[60rem] rounded-md">
           <div className="top-section flex justify-between w-full border-b p-5 fixed top-0">
             <h1 className="font-extrabold text-lg">Upload Videos</h1>
