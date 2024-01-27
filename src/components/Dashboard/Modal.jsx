@@ -3,9 +3,12 @@ import ReactDom from "react-dom";
 import { IoCloseOutline } from "react-icons/io5";
 import { RiFeedbackLine } from "react-icons/ri";
 import { MdFileUpload } from "react-icons/md";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+
+import UserContext from "./../context/UserContext";
 
 const Modal = ({ isOpen, onClose }) => {
+  const { cookie } = useContext(UserContext);
   const [file, setFile] = useState();
   const [fileData, setFileData] = useState();
   const fileInputRef = useRef(null);
@@ -19,6 +22,7 @@ const Modal = ({ isOpen, onClose }) => {
       try {
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("access_token", cookie);
         const postFile = await fetch("http://localhost:3000/upload", {
           method: "POST",
           body: formData,
@@ -59,6 +63,7 @@ const Modal = ({ isOpen, onClose }) => {
         className="overlay transition duration-500 ease-in-out fixed top-0 left-0 right-0 bottom-0 z-[1000] bg-modalColor"
       />
       <div className="modal-container transition duration-500 ease-in-out fixed top-2/4 left-2/4 z-[1000] -translate-y-1/2 -translate-x-1/2">
+        {fileData?.status === 200 &&}
         <div className="modal bg-white h-[33rem] w-[60rem] rounded-md">
           <div className="top-section flex justify-between w-full border-b p-5 fixed top-0">
             <h1 className="font-extrabold text-lg">Upload Videos</h1>
