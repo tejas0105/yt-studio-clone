@@ -160,6 +160,7 @@ const Modal = ({ isOpen, onClose }) => {
                         className=""
                         onClick={() => {
                           uploadFile();
+                          setFile(null);
                         }}
                       >
                         <Button>Upload</Button>
