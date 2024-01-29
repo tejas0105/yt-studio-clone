@@ -18,10 +18,10 @@ const Modal = ({ isOpen, onClose }) => {
   const imgInputRef = useRef(null);
 
   const [videoFile, setVideoFile] = useState();
-  const [fileData, setFileData] = useState();
   const [imgData, setImgData] = useState();
   const [videoFileSelected, setVideoFileSelected] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -35,44 +35,47 @@ const Modal = ({ isOpen, onClose }) => {
 
   const uploadFile = async ({
     videoFile,
-    imgFile,
+    imgData,
     cookie,
     title,
     description,
   }) => {
-    const formData = new FormData();
-    formData.append("videoFile", videoFile);
-    formData.append("imgFile", imgFile);
-    formData.append("access_token", cookie);
-    formData.append("title", title);
-    formData.append("description", description);
-    // const response = await fetch("http://localhost:3000/upload", {
-    //   method: "POST",
-    //   body: formData,
-    // });
-    // if (!response.ok) {
-    //   throw new Error("Something went wrong");
-    // }
-    // return response.json();
-    console.log(formData);
-    // return { file, cookie, title, description };
+    if (imgData) {
+      const formData = new FormData();
+      formData.append("videoFile", videoFile);
+      formData.append("imgData", imgData);
+      formData.append("access_token", cookie);
+      formData.append("title", title);
+      formData.append("description", description);
+      const response = await fetch("http://localhost:3000/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error("Something went wrong");
+      }
+      return response.json();
+      // console.log(formData);
+      // return { file, cookie, title, description };
+    } else {
+      console.log("not found");
+    }
   };
 
   const {
     mutate,
+    isError,
     data: uploadFileResponse,
     isPending,
   } = useMutation({
     mutationFn: uploadFile,
     mutationKey: "upload-file",
-    onSuccess: () => {
-      setFileData(uploadFileResponse);
-      console.log("onSuccess");
-    },
   });
 
   useEffect(() => {
     if (uploadFileResponse) {
+      if (uploadFileResponse.status === "success") setSuccess(true);
+      else setSuccess(false);
       console.log(uploadFileResponse);
     }
   }, [uploadFileResponse]);
@@ -85,7 +88,9 @@ const Modal = ({ isOpen, onClose }) => {
 
   const imgFileChange = (e) => {
     const selectedImg = e.target.files[0];
-    setImgData(selectedImg);
+    if (selectedImg) {
+      setImgData(selectedImg);
+    }
     // console.log("Thumbnail:", imgData);
   };
 
@@ -106,17 +111,11 @@ const Modal = ({ isOpen, onClose }) => {
       mutate({ videoFile, imgData, cookie, title, description });
   };
 
-  useEffect(() => {
-    try {
-      if (fileData && fileData.status === "success") {
-        setSuccess(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [fileData]);
-
   if (!isOpen) return null;
+
+  if (isError) {
+    setError(true);
+  }
 
   if (isPending) {
     return ReactDom.createPortal(
@@ -160,8 +159,8 @@ const Modal = ({ isOpen, onClose }) => {
                     setImgData(null);
                     setSuccess(false);
                     setVideoFileSelected(false);
-                    setTitle(null);
-                    setDescription(null);
+                    setTitle("");
+                    setDescription("");
                     onClose();
                   }}
                 />
@@ -179,7 +178,14 @@ const Modal = ({ isOpen, onClose }) => {
             <div>
               <div className="top-section flex justify-between w-full border-b p-5 fixed top-0">
                 <h1 className="font-extrabold text-lg">Upload Videos</h1>
-                <button className="mr-5 flex" onClick={onClose}>
+                <button
+                  className="mr-5 flex"
+                  onClick={() => {
+                    onClose();
+                    setTitle("");
+                    setDescription("");
+                  }}
+                >
                   <RiFeedbackLine className="text-2xl mr-5" />
                   <IoCloseOutline className="text-2xl font-extrabold" />
                 </button>
@@ -259,8 +265,8 @@ const Modal = ({ isOpen, onClose }) => {
                           setImgData(null);
                           setSuccess(false);
                           setVideoFileSelected(false);
-                          setTitle(null);
-                          setDescription(null);
+                          setTitle("");
+                          setDescription("");
                         }}
                       >
                         <Button variant="destructive">Cancel</Button>

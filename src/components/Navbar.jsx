@@ -50,8 +50,8 @@ function Navbar() {
         <div className="create-button-div flex justify-center items-center h-8 p-2 mr-5 border-slate-800 border w-44">
           <button
             onClick={() => {
-              Cookies.remove("token");
-              Cookies.remove("refresh_token");
+              Cookies.remove("access_token");
+              // Cookies.remove("refresh_token");
             }}
           >
             Log Out
