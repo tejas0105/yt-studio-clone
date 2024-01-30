@@ -10,7 +10,7 @@ import yt_studio_logo from "./../assets/yt_studio_logo.svg";
 import UserContext from "./context/UserContext";
 
 function Navbar() {
-  const { result } = useContext(UserContext);
+  const { result, toggleSidebar, setToggleSidebar } = useContext(UserContext);
   const [img, setImg] = useState("");
   const [dimensions, setDimensions] = useState({});
 
@@ -26,7 +26,12 @@ function Navbar() {
     <div className="navbar m-0 p-0 flex justify-between items-center h-16 w-full shadow-md">
       <div className="navbar-left-section flex justify-center items-center w-44">
         <div className="hamburger-div ml-7">
-          <HiBars3 className="hamburger-menu text-2xl" />
+          <HiBars3
+            className="hamburger-menu text-2xl cursor-pointer"
+            onClick={() => {
+              setToggleSidebar(!toggleSidebar);
+            }}
+          />
         </div>
         <div className="yt-logo-div ml-4">
           <img

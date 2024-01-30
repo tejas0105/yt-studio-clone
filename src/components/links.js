@@ -1,4 +1,13 @@
 import { nanoid } from "nanoid";
+import { MdDashboard } from "react-icons/md";
+import { MdContentCopy } from "react-icons/md";
+import { LiaCommentSolid } from "react-icons/lia";
+
+const iconComponents = {
+  dashboard: MdDashboard,
+  content: MdContentCopy,
+  comments: LiaCommentSolid,
+};
 
 const links = [
   { id: nanoid(), name: "dashboard" },
@@ -6,4 +15,4 @@ const links = [
   { id: nanoid(), name: "comments" },
 ];
 
-export default links;
+export { links, iconComponents };

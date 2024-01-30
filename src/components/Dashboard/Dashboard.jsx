@@ -12,9 +12,18 @@ const Dashboard = () => {
   const { views } = useContext(AnalyticsContext);
 
   useEffect(() => {
-    setSubCount(result?.items?.[0]?.statistics?.subscriberCount);
-    const viewsData = views?.rows;
+    if (result) {
+      if (result?.items?.[0]?.statistics?.subscriberCount) {
+        setSubCount(result?.items?.[0]?.statistics?.subscriberCount);
+      }
+    }
+  }, [result]);
 
+  useEffect(() => {
+    if (views) {
+      console.log(views);
+    }
+    const viewsData = views?.rows;
     const calculateViewsSum = (data) => {
       if (data && data.length) {
         let sum = 0;

@@ -4,6 +4,7 @@ import UserContext from "./UserContext";
 
 // eslint-disable-next-line react/prop-types
 const UserContextProvider = ({ children }) => {
+  const [toggleSidebar, setToggleSidebar] = useState(true);
   const [result, setResult] = useState([]);
   const [cookie, setCookie] = useState("");
   const [playlist, setPlayList] = useState("");
@@ -14,6 +15,10 @@ const UserContextProvider = ({ children }) => {
   // const [nextPageTokenToSend, setNextPageTokenToSend] = useState();
   // const [prevPageTokenToSend, setPrevPageTokenToSend] = useState();
   // const [prevPageToken, setPrevPageToken] = useState(null);
+
+  useEffect(() => {
+    console.log(toggleSidebar);
+  }, [toggleSidebar]);
 
   useEffect(() => {
     const cookieValue = document.cookie;
@@ -180,6 +185,8 @@ const UserContextProvider = ({ children }) => {
         cookie,
         videoList,
         viewCount,
+        toggleSidebar,
+        setToggleSidebar,
         // setNextPageToken,
         // setPrevPageToken,
         // nextPageTokenToSend,
