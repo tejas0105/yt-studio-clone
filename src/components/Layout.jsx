@@ -19,7 +19,7 @@ const Layout = () => {
       </div>
       <section className="content w-full flex h-[calc(100vh-4rem)]">
         <div
-          className={`sidebar-div m-0 ${
+          className={`sidebar-div m-0 duration-300 ease-in-out ${
             toggleSidebar ? "w-80" : "w-16"
           } h-full border-r border-gray-300`}
         >

@@ -26,18 +26,18 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div
-        className={`img-container flex justify-center items-center flex-col ${
-          toggleSidebar ? "h-56" : "h-20"
+        className={`img-container flex transition-all justify-center items-center duration-300 ease-in-out flex-col ${
+          toggleSidebar ? "h-56" : "h-16"
         } `}
       >
         <img
-          className={`pfp-default rounded-full ${
-            toggleSidebar ? "h-28 w-28" : "h-10 w-10"
+          className={`pfp-default rounded-full transition duration-300 ease-in-out ${
+            toggleSidebar ? "h-28 w-28" : "h-8 w-8"
           }`}
           src={img}
           alt="profile_default"
         />
-        <p className={`your-channel ${toggleSidebar || "hidden"}`}>
+        <p className={`your-channel transition ${toggleSidebar || "hidden"}`}>
           Your channel
         </p>
         <p
