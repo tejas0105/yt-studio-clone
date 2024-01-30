@@ -4,6 +4,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { RiFeedbackLine } from "react-icons/ri";
 import { MdFileUpload } from "react-icons/md";
 import { MdOutlineDone } from "react-icons/md";
+import { IoIosAddCircleOutline } from "react-icons/io";
 import { useEffect, useRef, useState, useContext } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,7 @@ const Modal = ({ isOpen, onClose }) => {
   const [imgData, setImgData] = useState();
   const [videoFileSelected, setVideoFileSelected] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -40,31 +41,27 @@ const Modal = ({ isOpen, onClose }) => {
     title,
     description,
   }) => {
-    if (imgData) {
-      const formData = new FormData();
-      formData.append("videoFile", videoFile);
-      formData.append("imgData", imgData);
-      formData.append("access_token", cookie);
-      formData.append("title", title);
-      formData.append("description", description);
-      const response = await fetch("http://localhost:3000/upload", {
-        method: "POST",
-        body: formData,
-      });
-      if (!response.ok) {
-        throw new Error("Something went wrong");
-      }
-      return response.json();
-      // console.log(formData);
-      // return { file, cookie, title, description };
-    } else {
-      console.log("not found");
+    const formData = new FormData();
+    formData.append("videoFile", videoFile);
+    formData.append("imgFile", imgData);
+    formData.append("access_token", cookie);
+    formData.append("title", title);
+    formData.append("description", description);
+    const response = await fetch("http://localhost:3000/upload", {
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error("Something went wrong");
     }
+    console.log(formData);
+    return response.json();
+    // console.log(formData);
+    // return { file, cookie, title, description };
   };
 
   const {
     mutate,
-    isError,
     data: uploadFileResponse,
     isPending,
   } = useMutation({
@@ -107,15 +104,16 @@ const Modal = ({ isOpen, onClose }) => {
   }, [videoFile]);
 
   const handleFileUpload = () => {
-    if (videoFile && imgData && cookie && title && description)
+    if (videoFile && cookie && title && description && !isPending) {
       mutate({ videoFile, imgData, cookie, title, description });
+    }
   };
 
   if (!isOpen) return null;
 
-  if (isError) {
-    setError(true);
-  }
+  // if (isError) {
+  //   setError(true);
+  // }
 
   if (isPending) {
     return ReactDom.createPortal(
@@ -161,6 +159,7 @@ const Modal = ({ isOpen, onClose }) => {
                     setVideoFileSelected(false);
                     setTitle("");
                     setDescription("");
+                    setSuccess(false);
                     onClose();
                   }}
                 />
@@ -181,13 +180,14 @@ const Modal = ({ isOpen, onClose }) => {
                 <button
                   className="mr-5 flex"
                   onClick={() => {
-                    onClose();
-                    setTitle("");
+                    setSuccess(false);
                     setDescription("");
+                    setTitle("");
+                    onClose();
                   }}
                 >
                   <RiFeedbackLine className="text-2xl mr-5" />
-                  <IoCloseOutline className="text-2xl font-extrabold" />
+                  <IoCloseOutline className="text-2xl font-extrabold" on />
                 </button>
               </div>
 
@@ -207,9 +207,18 @@ const Modal = ({ isOpen, onClose }) => {
                       ) : (
                         <>
                           <h4 className="opacity-60">No Thumbnail Selected</h4>
-                          <button onClick={handleImgFileSelect}>+</button>
+                          <div
+                            className="border bg-gray-100 cursor-pointer flex flex-col justify-center items-center mt-4 h-44 w-52 rounded"
+                            onClick={handleImgFileSelect}
+                          >
+                            <IoIosAddCircleOutline className="text-5xl font-light text-gray-400" />
+                            <p className="text-sm font-light mt-2 text-gray-400">
+                              Click here to add thumbnail
+                            </p>
+                          </div>
                           <input
                             type="file"
+                            name="imgData"
                             ref={imgInputRef}
                             accept="image/jpeg"
                             style={{ display: "none" }}
@@ -276,7 +285,7 @@ const Modal = ({ isOpen, onClose }) => {
                         onClick={() => {
                           // uploadFile();
                           handleFileUpload();
-                          setVideoFile(null);
+                          // setVideoFile(null);
                         }}
                       >
                         <Button>Upload</Button>
@@ -286,15 +295,16 @@ const Modal = ({ isOpen, onClose }) => {
                 </div>
               ) : (
                 <section className="modal-content flex justify-center items-center flex-col fixed w-full bottom-0 h-[calc(100%-69px)]">
-                  <div className="bg-gray-100 h-36 w-36 flex justify-center items-center rounded-full">
+                  <div
+                    className="bg-gray-100 h-36 w-36 flex justify-center items-center rounded-full cursor-pointer"
+                    onClick={handleVideoFileSelect}
+                  >
                     <button>
-                      <MdFileUpload
-                        className="text-6xl opacity-40"
-                        onClick={handleVideoFileSelect}
-                      />
+                      <MdFileUpload className="text-6xl opacity-40" />
                     </button>
                     <input
                       type="file"
+                      name="videoFile"
                       ref={fileInputRef}
                       accept="video/mp4"
                       style={{ display: "none" }}
