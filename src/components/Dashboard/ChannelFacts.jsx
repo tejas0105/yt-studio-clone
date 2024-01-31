@@ -14,7 +14,7 @@ const ChannelFacts = ({ viewsCount, subsCount }) => {
       </div>
       <div className="summary-div">
         <h4 className="summary-title">Summary</h4>
-        <p className="days">Last 28 days</p>
+        <p className="days opacity-55">Last 28 days</p>
         <div className="views-summary-div">
           <div className="metrics">
             <p className="views">views</p>
