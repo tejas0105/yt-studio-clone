@@ -2,24 +2,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { HiBars3 } from "react-icons/hi2";
 import { IoIosHelpCircleOutline } from "react-icons/io";
-// import { IoAdd } from "react-icons/io5";
 import { useContext, useEffect, useState } from "react";
-import Cookies from "js-cookie";
 
 import yt_studio_logo from "./../assets/yt_studio_logo.svg";
 import UserContext from "./context/UserContext";
 
-function Navbar() {
+function Navbar({ dropDown, setDropDown }) {
   const { result, toggleSidebar, setToggleSidebar } = useContext(UserContext);
   const [img, setImg] = useState("");
-  const [dimensions, setDimensions] = useState({});
 
   useEffect(() => {
     setImg(result?.items?.[0]?.snippet?.thumbnails?.default?.url);
-    setDimensions({
-      width: result?.items?.[0]?.snippet?.thumbnails?.default?.width,
-      height: result?.items?.[0]?.snippet?.thumbnails?.default?.height,
-    });
   }, [result]);
 
   return (
@@ -41,36 +34,26 @@ function Navbar() {
           />
         </div>
       </div>
-      <div className="navbar-right-section flex w-48 flex-1 justify-between items-center">
+      <div className="navbar-right-section flex w-48 flex-1 justify-center items-center">
         {/* <div className="search-bar-div"> */}
         <input
-          className="search-bar pl-6 border font-medium w-full h-9 mr-48 ml-48"
+          className="search-bar pl-6 border font-medium w-full h-9 mr-48 ml-40"
           type="text"
           placeholder="Search across your channel"
         />
         {/* </div> */}
         <div className="help-button-div">
-          <IoIosHelpCircleOutline className="help-button text-2xl w-20 mr-2" />
+          <IoIosHelpCircleOutline className="help-button text-2xl w-20" />
         </div>
-        <div className="create-button-div flex justify-center items-center h-8 p-2 mr-5 border-slate-800 border w-44">
-          <button
-            onClick={() => {
-              Cookies.remove("access_token");
-              // Cookies.remove("refresh_token");
-            }}
-          >
-            Log Out
-          </button>
-        </div>
-        <div className="current-user-div mr-7">
+
+        <div className="current-user-div flex justify-center items-center mr-7 h-16 w-16">
           {/* <CgProfile className="current-user" /> */}
           <img
-            className="current-user rounded-full"
+            className="current-user cursor-pointer rounded-full h-8 w-8"
             src={img}
             alt="current-user"
-            style={{
-              width: `${dimensions.width}`,
-              height: `${dimensions.height}`,
+            onClick={() => {
+              setDropDown(!dropDown);
             }}
           />
         </div>

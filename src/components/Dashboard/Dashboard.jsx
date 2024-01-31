@@ -20,9 +20,6 @@ const Dashboard = () => {
   }, [result]);
 
   useEffect(() => {
-    if (views) {
-      console.log(views);
-    }
     const viewsData = views?.rows;
     const calculateViewsSum = (data) => {
       if (data && data.length) {

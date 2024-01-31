@@ -17,10 +17,6 @@ const UserContextProvider = ({ children }) => {
   // const [prevPageToken, setPrevPageToken] = useState(null);
 
   useEffect(() => {
-    console.log(toggleSidebar);
-  }, [toggleSidebar]);
-
-  useEffect(() => {
     const cookieValue = document.cookie;
 
     if (cookieValue) {

@@ -26,18 +26,18 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div
-        className={`img-container flex transition-all justify-center items-center duration-300 ease-in-out flex-col ${
+        className={`img-container flex  justify-center items-center  flex-col ${
           toggleSidebar ? "h-56" : "h-16"
         } `}
       >
         <img
-          className={`pfp-default rounded-full transition duration-300 ease-in-out ${
-            toggleSidebar ? "h-28 w-28" : "h-8 w-8"
+          className={`pfp-default rounded-full  ${
+            toggleSidebar ? "h-28 w-28 " : "h-8 w-8 "
           }`}
           src={img}
           alt="profile_default"
         />
-        <p className={`your-channel transition ${toggleSidebar || "hidden"}`}>
+        <p className={`your-channel ${toggleSidebar || "hidden"}`}>
           Your channel
         </p>
         <p
@@ -54,12 +54,12 @@ function Sidebar() {
               return (
                 <NavLink
                   style={navLinkStyles}
-                  className="single-link font-black flex justify-items-start items-center h-11 mt-1 w-full capitalize text-slate-950 no-underline duration-300 ease-in-out hover:bg-gray-300 active:bg-gray-500"
+                  className="single-link font-black flex justify-items-start items-center h-11 mt-1 w-full capitalize text-slate-950 no-underline duration-300 ease-in-out hover:bg-gray-100"
                   key={item.id}
                   to={item.name}
                 >
                   <div className="flex ml-5 flex-row w-auto h-full justify-center items-center">
-                    <span className="text-xl">
+                    <span className="text-xl font-light">
                       <IconComponent />
                     </span>
                     <span

@@ -24,8 +24,28 @@ const AnalyticsContextProvider = ({ children }) => {
     try {
       const fetchData = async () => {
         if (cookie) {
+          let currentDate = new Date();
+          let endDate = `${currentDate.getFullYear()}-${(
+            currentDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${currentDate
+            .getDate()
+            .toString()
+            .padStart(2, "0")}`;
+
+          let newDate = new Date(
+            currentDate.setDate(currentDate.getDate() - 28)
+          );
+          let startDate = `${newDate.getFullYear()}-${(newDate.getMonth() + 1)
+            .toString()
+            .padStart(2, "0")}-${newDate
+            .getDate()
+            .toString()
+            .padStart(2, "0")}`;
+
           const resp = await fetch(
-            `https://youtubeanalytics.googleapis.com/v2/reports?dimensions=day&endDate=2024-01-04&ids=channel%3D%3DMINE&metrics=views&sort=day%2C-views&startDate=2023-12-07&key=${
+            `https://youtubeanalytics.googleapis.com/v2/reports?dimensions=day&endDate=${endDate}&ids=channel%3D%3DMINE&metrics=views&sort=day%2C-views&startDate=${startDate}&key=${
               import.meta.env.VITE_API_KEY
             }`,
             {
