@@ -16,38 +16,36 @@ function Navbar({ dropDown, setDropDown }) {
   }, [result]);
 
   return (
-    <div className="navbar m-0 p-0 flex justify-between items-center h-16 w-full shadow-md">
-      <div className="navbar-left-section flex justify-center items-center w-44">
-        <div className="hamburger-div ml-7">
+    <div className="border h-16 flex justify-between items-center shadow-md">
+      <section className="leftSection flex justify-between items-center ml-4 w-40">
+        <div className="hamburger-div">
           <HiBars3
-            className="hamburger-menu text-2xl cursor-pointer"
+            className="hamburger ml-4 h-6 w-6 cursor-pointer"
             onClick={() => {
               setToggleSidebar(!toggleSidebar);
             }}
           />
         </div>
-        <div className="yt-logo-div ml-4">
+        <div className="yt-studio-logo-div mr-2">
           <img
-            className="yt_studio_logo h-6"
+            className="yt-studio-logo h-8 w-24"
             src={yt_studio_logo}
-            alt="yt_studio_logo"
+            alt="yt-studio-logo"
           />
         </div>
-      </div>
-      <div className="navbar-right-section flex w-48 flex-1 justify-center items-center">
-        {/* <div className="search-bar-div"> */}
-        <input
-          className="search-bar pl-6 border font-medium w-full h-9 mr-48 ml-40"
-          type="text"
-          placeholder="Search across your channel"
-        />
-        {/* </div> */}
-        <div className="help-button-div">
-          <IoIosHelpCircleOutline className="help-button text-2xl w-20" />
+      </section>
+      <section className="rightSection flex justify-center items-center w-4/5 h-full">
+        <div className="search-bar-div w-auto relative right-[7.5rem] 2xl:right-[11rem]">
+          <input
+            className="pl-5 border w-[36rem] h-9 rounded-sm"
+            type="text"
+            placeholder="Search across your channel"
+          />
         </div>
-
-        <div className="current-user-div flex justify-center items-center mr-7 h-16 w-16">
-          {/* <CgProfile className="current-user" /> */}
+        <div className="help-div flex justify-center fixed right-24 items-center ">
+          <IoIosHelpCircleOutline className="h-6 w-6" />
+        </div>
+        <div className="pfp-div fixed right-10">
           <img
             className="current-user cursor-pointer rounded-full h-8 w-8"
             src={img}
@@ -57,7 +55,7 @@ function Navbar({ dropDown, setDropDown }) {
             }}
           />
         </div>
-      </div>
+      </section>
     </div>
   );
 }
