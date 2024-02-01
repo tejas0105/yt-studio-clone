@@ -44,8 +44,8 @@ const Layout = () => {
         </div>
         <div className="outlet-div w-full h-full">
           {dropDown && (
-            <div className="rounded-md bg-white border-gray-100 flex flex-col shadow-lg top-12 fixed right-0 h-auto w-[16rem] mr-7">
-              <section className="upper-section h-[4.5rem] flex justify-start items-center border rounded-t-lg w-full border-gray-100">
+            <div className="rounded-md bg-white border-gray-100 flex flex-col shadow-lg top-12 fixed right-0 h-auto w-[16rem] z-50 mr-7">
+              <section className="upper-section h-[4.5rem] flex justify-start items-center border-b border-t rounded-t-lg w-full border-gray-100">
                 <div className="current-user-div flex justify-center items-center h-16 w-16">
                   <img
                     className="current-user rounded-full h-9 w-9"

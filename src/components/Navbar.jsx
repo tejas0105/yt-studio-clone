@@ -35,9 +35,9 @@ function Navbar({ dropDown, setDropDown }) {
         </div>
       </section>
       <section className="rightSection flex justify-center items-center w-4/5 h-full">
-        <div className="search-bar-div w-auto relative right-[7.5rem] 2xl:right-[11rem]">
+        <div className="search-bar-div w-auto relative right-[7.5rem] 2xl:right-[11rem] rounded">
           <input
-            className="pl-5 border w-[36rem] h-9 rounded-sm"
+            className="pl-5 text-sm border w-[36rem] 2xl:w-[46rem] h-9 rounded-sm"
             type="text"
             placeholder="Search across your channel"
           />

@@ -1,4 +1,4 @@
-import Page from "./Content-TableUI/Page";
+import Page from "./Content/Page";
 
 const Content = () => {
   return (

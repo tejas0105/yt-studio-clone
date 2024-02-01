@@ -22,12 +22,13 @@ export default function Page() {
   const [postsPerPage, setPostsPerPage] = useState(4);
   const [pages, setPages] = useState([]);
   const [pageNumber, setPageNumber] = useState([]);
-  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     if (videoList && videoList.length > 0) {
       const indexOfLastPage = currentPage * postsPerPage;
+      console.log(indexOfLastPage);
       const indexOfFirstPage = indexOfLastPage - postsPerPage;
+      console.log(indexOfFirstPage);
       const currentVideos = videoList.slice(indexOfFirstPage, indexOfLastPage);
       setPages(currentVideos);
     }
@@ -116,7 +117,7 @@ export default function Page() {
 
   const handleNextPage = () => {
     setCurrentPage((prevState) => {
-      if (prevState > postsPerPage) return;
+      if (prevState >= pageNumber.length) return;
       return prevState + 1;
     });
   };
@@ -167,7 +168,7 @@ export default function Page() {
           );
         })}
         <PaginationContent>
-          {currentPage === postsPerPage ? (
+          {currentPage === pageNumber.length ? (
             <button
               disabled
               className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md text-gray-300"
