@@ -1,8 +1,8 @@
-import Page from "./Content/Page";
+import Page from "./Page";
 
 const Content = () => {
   return (
-    <div>
+    <div className="h-full">
       <Page />
     </div>
   );

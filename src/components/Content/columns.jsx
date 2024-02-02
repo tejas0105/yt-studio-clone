@@ -65,7 +65,7 @@ export const columns = [
       let Restrictions = restrictionIcons[row?.original?.restrictions];
       return (
         <p className="capitalize flex justify-center items-center">
-          <span className="mr-1 text-lg">
+          <span className="mr-1 text-lg opacity-55">
             <Restrictions />
           </span>
           {restriction}
@@ -107,10 +107,16 @@ export const columns = [
               <FiEdit2 className="mr-2" />
               Edit title or description
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <MdOutlineDelete className="mr-2 h-4 w-4" />
-              Delete forever
-            </DropdownMenuItem>
+            <span
+              onClick={() => {
+                row?.original?.changeDeleteModalState();
+              }}
+            >
+              <DropdownMenuItem>
+                <MdOutlineDelete className="mr-2 h-4 w-4" />
+                Delete forever
+              </DropdownMenuItem>
+            </span>
           </DropdownMenuContent>
         </DropdownMenu>
       );

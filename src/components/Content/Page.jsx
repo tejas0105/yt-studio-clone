@@ -6,11 +6,13 @@ import { DataTable } from "./data-table";
 import UserContext from "../context/UserContext";
 
 import { Pagination, PaginationContent } from "@/components/ui/pagination";
+import DeleteConfirmModal from "./DeleteConfirmModal";
 
 export default function Page() {
   const {
     videoList,
     viewCount,
+    cookie,
     // nextPageTokenToSend,
     // prevPageTokenToSend,
     // setNextPageToken,
@@ -22,13 +24,14 @@ export default function Page() {
   const [postsPerPage, setPostsPerPage] = useState(4);
   const [pages, setPages] = useState([]);
   const [pageNumber, setPageNumber] = useState([]);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   useEffect(() => {
     if (videoList && videoList.length > 0) {
       const indexOfLastPage = currentPage * postsPerPage;
-      console.log(indexOfLastPage);
+      // console.log(indexOfLastPage);
       const indexOfFirstPage = indexOfLastPage - postsPerPage;
-      console.log(indexOfFirstPage);
+      // console.log(indexOfFirstPage);
       const currentVideos = videoList.slice(indexOfFirstPage, indexOfLastPage);
       setPages(currentVideos);
     }
@@ -43,6 +46,10 @@ export default function Page() {
       setPageNumber(pageNumberArray);
     }
   }, [videoList, postsPerPage]);
+
+  useEffect(() => {
+    console.log(deleteModal);
+  }, [deleteModal]);
 
   function convertDateFormat(intputDate) {
     const parts = intputDate.split("-");
@@ -92,9 +99,14 @@ export default function Page() {
           id: item?.id,
           video: item?.snippet?.thumbnails?.default?.url,
           restrictions: item?.status?.privacyStatus,
+          videoId: item?.contentDetails?.videoId,
           link: `https://www.youtube.com/watch?v=${item?.contentDetails?.videoId}`,
           title: item?.snippet?.title,
           date: formattedDate,
+          cookie: cookie,
+          changeDeleteModalState: () => {
+            setDeleteModal(!deleteModal);
+          },
           description: item?.snippet?.description,
           views:
             viewCount?.items.find(
@@ -108,7 +120,7 @@ export default function Page() {
       });
       setData(newData);
     }
-  }, [pages, viewCount?.items]);
+  }, [pages, viewCount?.items, cookie, deleteModal]);
 
   // useEffect(() => {
   //   if (viewCount) console.log("viewCount->", viewCount);
@@ -134,58 +146,66 @@ export default function Page() {
   };
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container flex flex-col justify-center items-center mx-auto py-8">
       <DataTable columns={columns} data={data} />
-      <Pagination>
-        {currentPage === 1 ? (
-          <button
-            disabled
-            className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md text-gray-300"
-          >
-            Prev
-          </button>
-        ) : (
-          <button
-            className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
-            onClick={handlePrevPage}
-          >
-            Prev
-          </button>
-        )}
-        {pageNumber.map((item, index) => {
-          return (
-            <Link
-              className={`pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 ${
-                currentPage === item ? "bg-neutral-400" : ""
-              } rounded-md hover:bg-neutral-200 ease-in-out transition`}
-              key={index}
-              onClick={() => {
-                changePage(item);
-              }}
-            >
-              {item}
-            </Link>
-          );
-        })}
-        <PaginationContent>
-          {currentPage === pageNumber.length ? (
+      <div className="pagination fixed bottom-10 2xl:bottom-56 flex justify-center items-center">
+        <Pagination>
+          {currentPage === 1 ? (
             <button
               disabled
               className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md text-gray-300"
-              onClick={handleNextPage}
             >
-              Next
+              Prev
             </button>
           ) : (
             <button
               className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
-              onClick={handleNextPage}
+              onClick={handlePrevPage}
             >
-              Next
+              Prev
             </button>
           )}
-        </PaginationContent>
-      </Pagination>
+          {pageNumber.map((item, index) => {
+            return (
+              <Link
+                className={`pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 ${
+                  currentPage === item ? "bg-neutral-400" : ""
+                } rounded-md hover:bg-neutral-200 ease-in-out transition`}
+                key={index}
+                onClick={() => {
+                  changePage(item);
+                }}
+              >
+                {item}
+              </Link>
+            );
+          })}
+          <PaginationContent>
+            {currentPage === pageNumber.length ? (
+              <button
+                disabled
+                className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md text-gray-300"
+                onClick={handleNextPage}
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                className="pl-3 pr-3 pt-1 pb-1 border mt-4 ml-4 rounded-md hover:bg-neutral-200 ease-in-out transition"
+                onClick={handleNextPage}
+              >
+                Next
+              </button>
+            )}
+          </PaginationContent>
+        </Pagination>
+      </div>
+      {deleteModal && (
+        <DeleteConfirmModal
+          deleteModal={deleteModal}
+          setDeleteModal={setDeleteModal}
+        />
+      )}
     </div>
   );
 }
