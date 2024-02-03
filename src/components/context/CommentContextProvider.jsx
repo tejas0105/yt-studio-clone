@@ -26,7 +26,6 @@ const CommentContextProvider = ({ children }) => {
     queryFn: () =>
       fetchCommentThreads(result?.items?.[0]?.id, import.meta.env.VITE_API_KEY),
     enabled: !!result?.items?.[0]?.id && !!import.meta.env.VITE_API_KEY,
-    staleTime: 30000,
   });
 
   useEffect(() => {

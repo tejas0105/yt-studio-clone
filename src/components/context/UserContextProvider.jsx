@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import UserContext from "./UserContext";
+import { useQuery } from "@tanstack/react-query";
 
 // eslint-disable-next-line react/prop-types
 const UserContextProvider = ({ children }) => {
@@ -11,6 +12,7 @@ const UserContextProvider = ({ children }) => {
   const [videoList, setVideoList] = useState();
   const [videoId, setVideoId] = useState([]);
   const [viewCount, setViewCount] = useState([]);
+  const [isDeleted, setIsDeleted] = useState(false);
   // const [nextPageToken, setNextPageToken] = useState("");
   // const [nextPageTokenToSend, setNextPageTokenToSend] = useState();
   // const [prevPageTokenToSend, setPrevPageTokenToSend] = useState();
@@ -62,30 +64,46 @@ const UserContextProvider = ({ children }) => {
   // useEffect(() => {
   //   console.log(result);
   // }, [result]);
+  const fetchPlaylist = async (result, cookie, playlist) => {
+    if (result && cookie && playlist) {
+      const playlistResponse = await fetch(
+        `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=25&playlistId=${playlist}&key=${
+          import.meta.env.VITE_API_KEY
+        }`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie}`,
+            Accept: "application/json",
+          },
+        }
+      );
+      const playlistData = await playlistResponse.json();
+      return playlistData;
+      // setNextPageTokenToSend(playlistData?.nextPageToken);
+    }
+  };
+
+  const { data: videoData, refetch } = useQuery({
+    queryKey: ["videolist", cookie, playlist, isDeleted],
+    queryFn: async () => {
+      if (result && cookie && playlist) {
+        const playlistData = await fetchPlaylist(result, cookie, playlist);
+        return playlistData;
+      }
+      return null;
+    },
+  });
 
   useEffect(() => {
-    const fetchPlaylist = async () => {
-      if (result && cookie && playlist) {
-        const playlistResponse = await fetch(
-          `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=25&playlistId=${playlist}&key=${
-            import.meta.env.VITE_API_KEY
-          }`,
-          {
-            headers: {
-              Authorization: `Bearer ${cookie}`,
-              Accept: "application/json",
-            },
-          }
-        );
-        const playlistData = await playlistResponse.json();
+    if (videoData) {
+      console.log(videoData);
+      setVideoList(videoData?.items);
+    }
+  }, [videoData]);
 
-        setVideoList(playlistData?.items);
-        // setNextPageTokenToSend(playlistData?.nextPageToken);
-      }
-    };
-
-    fetchPlaylist();
-  }, [playlist, cookie, result]);
+  useEffect(() => {
+    if (isDeleted) refetch();
+  }, [isDeleted]);
 
   useEffect(() => {
     if (videoList && videoList.length > 0) {
@@ -183,6 +201,7 @@ const UserContextProvider = ({ children }) => {
         viewCount,
         toggleSidebar,
         setToggleSidebar,
+        setIsDeleted,
         // setNextPageToken,
         // setPrevPageToken,
         // nextPageTokenToSend,

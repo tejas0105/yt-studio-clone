@@ -119,7 +119,9 @@ const Modal = ({ isOpen, onClose }) => {
     return ReactDom.createPortal(
       <>
         <div
-          onClick={onClose}
+          onClick={() => {
+            onClose();
+          }}
           className="overlay transition duration-500 ease-in-out fixed top-0 left-0 right-0 bottom-0 z-[1000] bg-modalColor"
         />
         <div className="modal-container transition duration-500 ease-in-out fixed top-2/4 left-2/4 z-[1000] -translate-y-1/2 -translate-x-1/2">

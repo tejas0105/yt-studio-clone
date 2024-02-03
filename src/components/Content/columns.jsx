@@ -14,6 +14,7 @@ import {
 import { RiGitRepositoryPrivateLine } from "react-icons/ri";
 import { MdOutlinePublic } from "react-icons/md";
 import { IoLinkOutline } from "react-icons/io5";
+import DeleteConfirmModal from "./DeleteConfirmModal";
 const restrictionIcons = {
   private: RiGitRepositoryPrivateLine,
   public: MdOutlinePublic,
@@ -36,7 +37,7 @@ export const columns = [
       return (
         <div className="flex items-center">
           <div className="img-div">
-            <img src={url} />
+            <img className="h-24" src={url} />
           </div>
           <div className=" ml-4 line-clamp-3 text-ellipsis w-96">
             <a
@@ -109,7 +110,9 @@ export const columns = [
             </DropdownMenuItem>
             <span
               onClick={() => {
-                row?.original?.changeDeleteModalState();
+                row?.original?.changeDeleteModalState(row?.original?.videoId);
+                row?.original?.getVideoName(row?.original?.title);
+                // console.log(row?.original?.title);
               }}
             >
               <DropdownMenuItem>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
@@ -25,6 +25,8 @@ export default function Page() {
   const [pages, setPages] = useState([]);
   const [pageNumber, setPageNumber] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [vidId, setVidId] = useState("");
+  const [videoName, setVideoName] = useState("");
 
   useEffect(() => {
     if (videoList && videoList.length > 0) {
@@ -46,10 +48,6 @@ export default function Page() {
       setPageNumber(pageNumberArray);
     }
   }, [videoList, postsPerPage]);
-
-  useEffect(() => {
-    console.log(deleteModal);
-  }, [deleteModal]);
 
   function convertDateFormat(intputDate) {
     const parts = intputDate.split("-");
@@ -97,15 +95,17 @@ export default function Page() {
 
         return {
           id: item?.id,
-          video: item?.snippet?.thumbnails?.default?.url,
+          video: item?.snippet?.thumbnails?.high?.url,
           restrictions: item?.status?.privacyStatus,
           videoId: item?.contentDetails?.videoId,
           link: `https://www.youtube.com/watch?v=${item?.contentDetails?.videoId}`,
           title: item?.snippet?.title,
           date: formattedDate,
           cookie: cookie,
-          changeDeleteModalState: () => {
+          videoTitle: item?.snippet?.title,
+          changeDeleteModalState: (id) => {
             setDeleteModal(!deleteModal);
+            setVidId(id);
           },
           description: item?.snippet?.description,
           views:
@@ -116,6 +116,9 @@ export default function Page() {
             viewCount?.items.find(
               (v) => v?.id === item?.contentDetails?.videoId
             )?.statistics?.likeCount || 0,
+          getVideoName: (videoName) => {
+            setVideoName(videoName);
+          },
         };
       });
       setData(newData);
@@ -123,9 +126,14 @@ export default function Page() {
   }, [pages, viewCount?.items, cookie, deleteModal]);
 
   // useEffect(() => {
-  //   if (viewCount) console.log("viewCount->", viewCount);
   //   if (pages) console.log("pages->", pages);
-  // }, [viewCount, pages]);
+  // }, [pages]);
+
+  // useEffect(() => {
+  //   if (vidId) {
+  //     console.log(vidId);
+  //   }
+  // }, [vidId]);
 
   const handleNextPage = () => {
     setCurrentPage((prevState) => {
@@ -204,6 +212,8 @@ export default function Page() {
         <DeleteConfirmModal
           deleteModal={deleteModal}
           setDeleteModal={setDeleteModal}
+          vidId={vidId}
+          videoName={videoName}
         />
       )}
     </div>
