@@ -47,7 +47,7 @@ const DeleteConfirmModal = ({ setDeleteModal, vidId, videoName }) => {
             <div
               className="delete-button"
               onClick={() => {
-                // console.log(vidId);
+                console.log(vidId);
                 deleteVideo(vidId);
               }}
             >

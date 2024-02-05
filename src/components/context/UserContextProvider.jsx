@@ -96,7 +96,7 @@ const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (videoData) {
-      console.log(videoData);
+      // console.log(videoData);
       setVideoList(videoData?.items);
     }
   }, [videoData]);

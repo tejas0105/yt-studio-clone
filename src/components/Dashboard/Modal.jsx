@@ -80,7 +80,7 @@ const Modal = ({ isOpen, onClose }) => {
   const handleVideoFileChange = (e) => {
     const selectedFiles = e.target.files[0];
     setVideoFile(selectedFiles);
-    console.log("Selected Files:", selectedFiles);
+    // console.log("Selected Files:", selectedFiles);
   };
 
   const imgFileChange = (e) => {

@@ -14,7 +14,7 @@ import {
 import { RiGitRepositoryPrivateLine } from "react-icons/ri";
 import { MdOutlinePublic } from "react-icons/md";
 import { IoLinkOutline } from "react-icons/io5";
-import DeleteConfirmModal from "./DeleteConfirmModal";
+
 const restrictionIcons = {
   private: RiGitRepositoryPrivateLine,
   public: MdOutlinePublic,
