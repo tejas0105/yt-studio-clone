@@ -12,8 +12,8 @@ function Sidebar() {
   const { result, toggleSidebar } = useContext(UserContext);
 
   useEffect(() => {
-    setImg(result?.items?.[0]?.snippet?.thumbnails?.default?.url);
-    setName(result?.items?.[0]?.snippet?.title);
+    setImg(result?.data?.channel?.thumbnails?.high?.url);
+    setName(result?.data?.channel?.title);
   }, [result]);
 
   const navLinkStyles = ({ isActive }) => {

@@ -24,6 +24,7 @@ const DeleteConfirmModal = ({ setDeleteModal, vidId, videoName }) => {
     if (resp.status === 204) {
       setTimeout(() => {
         setIsDeleted(true);
+        setDeleteModal(false);
       }, 4500);
     }
   };
@@ -47,7 +48,8 @@ const DeleteConfirmModal = ({ setDeleteModal, vidId, videoName }) => {
             <div
               className="delete-button"
               onClick={() => {
-                console.log(vidId);
+                // console.log(vidId);
+
                 deleteVideo(vidId);
               }}
             >

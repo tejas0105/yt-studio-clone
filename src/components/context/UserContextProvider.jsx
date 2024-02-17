@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import UserContext from "./UserContext";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // eslint-disable-next-line react/prop-types
 const UserContextProvider = ({ children }) => {
@@ -20,8 +20,8 @@ const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     const cookieValue = document.cookie;
-
     if (cookieValue) {
+      console.log(cookieValue);
       const splitCookie = cookieValue.split("=");
 
       const cookies = splitCookie[1].split(";")[0];
@@ -32,78 +32,80 @@ const UserContextProvider = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        if (cookie) {
-          const response = await fetch(
-            `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics%2Cstatus&mine=true&key=${
-              import.meta.env.VITE_API_KEY
-            }`,
-            {
-              headers: {
-                Authorization: `Bearer ${cookie}`,
-                Accept: "application/json",
-              },
-            }
-          );
-          const data = await response.json();
-          setResult(data);
-          setPlayList(
-            data?.items?.[0]?.contentDetails?.relatedPlaylists?.uploads
-          );
-        }
-      };
-
-      fetchData();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [cookie]);
-
-  // useEffect(() => {
-  //   console.log(result);
-  // }, [result]);
-  const fetchPlaylist = async (result, cookie, playlist) => {
-    if (result && cookie && playlist) {
-      const playlistResponse = await fetch(
-        `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cid%2Cstatus&maxResults=25&playlistId=${playlist}&key=${
-          import.meta.env.VITE_API_KEY
-        }`,
-        {
-          headers: {
-            Authorization: `Bearer ${cookie}`,
-            Accept: "application/json",
-          },
-        }
-      );
-      const playlistData = await playlistResponse.json();
-      return playlistData;
-      // setNextPageTokenToSend(playlistData?.nextPageToken);
+  const fetchChannelData = async (cookie) => {
+    if (cookie) {
+      const response = await fetch(`http://localhost:3000/getchannel`, {
+        headers: {
+          Authorization: `Bearer ${cookie}`,
+          Accept: "application/json",
+        },
+      });
+      return response.json();
     }
   };
 
-  const { data: videoData, refetch } = useQuery({
-    queryKey: ["videolist", cookie, playlist, isDeleted],
+  const {
+    data: channelDetails,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["channelDetails", cookie],
     queryFn: async () => {
-      if (result && cookie && playlist) {
-        const playlistData = await fetchPlaylist(result, cookie, playlist);
-        return playlistData;
-      }
-      return null;
+      return fetchChannelData(cookie);
     },
   });
 
   useEffect(() => {
-    if (videoData) {
-      // console.log(videoData);
-      setVideoList(videoData?.items);
+    if (channelDetails) {
+      setResult(channelDetails);
+      setPlayList(channelDetails?.data?.playlistID);
     }
-  }, [videoData]);
+  }, [channelDetails]);
 
   useEffect(() => {
-    if (isDeleted) refetch();
-  }, [isDeleted]);
+    console.log(result);
+  }, [result]);
+
+  const fetchPlaylist = async (cookie, playlist) => {
+    if (cookie && playlist) {
+      const playlistResponse = await fetch(`http://localhost:3000/getvideos`, {
+        method: "POST",
+        body: JSON.stringify({
+          playlistID: playlist,
+        }),
+        headers: {
+          Authorization: `Bearer ${cookie}`,
+          "Content-type": "application/json",
+        },
+      });
+      console.log(playlist);
+      return playlistResponse.json();
+      // setNextPageTokenToSend(playlistData?.nextPageToken);
+    }
+  };
+
+  const {
+    mutateAsync: fetchVideos,
+    data: videos,
+    isError: videoerror,
+  } = useMutation({
+    mutationKey: ["fetchvideos", cookie, playlist],
+    mutationFn: async () => {
+      return fetchPlaylist(cookie, playlist);
+    },
+    onSuccess: (data) => {
+      console.log(data?.data);
+      setVideoList(data?.data);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  useEffect(() => {
+    if (cookie && playlist) {
+      fetchVideos();
+    }
+  }, [cookie, playlist]);
 
   useEffect(() => {
     if (videoList && videoList.length > 0) {
@@ -117,9 +119,11 @@ const UserContextProvider = ({ children }) => {
     }
   }, [videoList]);
 
-  // useEffect(() => {
-  //   console.log(videoList);
-  // }, [videoList]);
+  useEffect(() => {
+    if (videoId) {
+      console.log(videoId);
+    }
+  }, [videoId]);
 
   useEffect(() => {
     if (videoId && videoId.length > 0) {

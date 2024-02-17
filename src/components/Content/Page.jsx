@@ -129,11 +129,11 @@ export default function Page() {
   //   if (pages) console.log("pages->", pages);
   // }, [pages]);
 
-  useEffect(() => {
-    if (vidId) {
-      console.log(vidId);
-    }
-  }, [vidId]);
+  // useEffect(() => {
+  //   if (vidId) {
+  //     console.log(vidId);
+  //   }
+  // }, [vidId]);
 
   const handleNextPage = () => {
     setCurrentPage((prevState) => {
