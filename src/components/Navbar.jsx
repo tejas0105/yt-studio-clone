@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from "react";
 
 import yt_studio_logo from "./../assets/yt_studio_logo.svg";
 import UserContext from "./context/UserContext";
-import Cookies from "js-cookie";
 
 function Navbar({ dropDown, setDropDown }) {
   const { result, toggleSidebar, setToggleSidebar } = useContext(UserContext);
@@ -15,15 +14,6 @@ function Navbar({ dropDown, setDropDown }) {
   useEffect(() => {
     setImg(result?.data?.channel?.thumbnails?.high?.url);
   }, [result]);
-
-  useEffect(() => {
-    let cookie = Cookies.get("refresh_token");
-    console.log(cookie);
-    const cookieExpiry = new Date(Cookies.get("access_token")).getTime();
-    const currentTime = new Date().getTime();
-    console.log("cookieExpiry->", cookieExpiry);
-    console.log("currentTime->", currentTime);
-  }, []);
 
   return (
     <div className="border h-16 flex justify-between items-center shadow-md">

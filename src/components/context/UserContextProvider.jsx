@@ -13,6 +13,9 @@ const UserContextProvider = ({ children }) => {
   const [videoId, setVideoId] = useState([]);
   const [viewCount, setViewCount] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [isAccessTokenExpired, setIsAccessTokenExpired] = useState(false);
+  const [refreshToken, setRefreshToken] = useState("");
+  const [isRefreshTokenExpired, setIsRefreshTokenExpired] = useState(false);
   // const [nextPageToken, setNextPageToken] = useState("");
   // const [nextPageTokenToSend, setNextPageTokenToSend] = useState();
   // const [prevPageTokenToSend, setPrevPageTokenToSend] = useState();
@@ -21,16 +24,69 @@ const UserContextProvider = ({ children }) => {
   useEffect(() => {
     const cookieValue = document.cookie;
     if (cookieValue) {
-      console.log(cookieValue);
       const splitCookie = cookieValue.split("=");
-
-      const cookies = splitCookie[1].split(";")[0];
-
-      setCookie(cookies);
+      // console.log(splitCookie);
+      if (splitCookie[0] === "access_token") {
+        const access_token = splitCookie[1].split(";")[0];
+        setCookie(access_token);
+      }
     } else {
       setCookie(undefined);
     }
   }, []);
+
+  useEffect(() => {
+    const cookieValue = document.cookie;
+    if (cookieValue) {
+      const splitCookie = cookieValue.split("=");
+      // console.log(splitCookie[2]);
+      // console.log(splitCookie[1].split(";")[1]);
+      if (splitCookie[1].split(";")[1] === " refresh_token") {
+        const refresh_token = splitCookie[2];
+        // console.log(refresh_token);
+        setRefreshToken(refresh_token);
+      }
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   if (refreshToken) console.log(refreshToken);
+  // }, [refreshToken]);
+
+  useEffect(() => {
+    if (cookie) {
+      console.log();
+      setIsAccessTokenExpired(false);
+    } else {
+      setIsAccessTokenExpired(true);
+    }
+  }, [cookie]);
+
+  const fetchNewTokens = async () => {
+    const resp = await fetch("http://localhost:3000/refresh_token", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        refresh_token: refreshToken,
+      }),
+    });
+    return resp.json();
+  };
+
+  const { mutateAsync, isError } = useMutation({
+    mutationKey: "fetchNewTokens",
+    mutationFn: async () => {
+      return fetchNewTokens();
+    },
+  });
+
+  useEffect(() => {
+    if (isAccessTokenExpired) {
+      mutateAsync();
+    }
+  }, [isAccessTokenExpired]);
 
   const fetchChannelData = async (cookie) => {
     if (cookie) {
@@ -46,8 +102,8 @@ const UserContextProvider = ({ children }) => {
 
   const {
     data: channelDetails,
-    isLoading,
-    isError,
+    isLoading: channelLoading,
+    isError: channelError,
   } = useQuery({
     queryKey: ["channelDetails", cookie],
     queryFn: async () => {
@@ -62,9 +118,9 @@ const UserContextProvider = ({ children }) => {
     }
   }, [channelDetails]);
 
-  useEffect(() => {
-    console.log(result);
-  }, [result]);
+  // useEffect(() => {
+  //   console.log(result);
+  // }, [result]);
 
   const fetchPlaylist = async (cookie, playlist) => {
     if (cookie && playlist) {
@@ -78,7 +134,6 @@ const UserContextProvider = ({ children }) => {
           "Content-type": "application/json",
         },
       });
-      console.log(playlist);
       return playlistResponse.json();
       // setNextPageTokenToSend(playlistData?.nextPageToken);
     }
@@ -86,15 +141,14 @@ const UserContextProvider = ({ children }) => {
 
   const {
     mutateAsync: fetchVideos,
-    data: videos,
-    isError: videoerror,
+    isLoading: videoLoading,
+    isError: videoError,
   } = useMutation({
     mutationKey: ["fetchvideos", cookie, playlist],
     mutationFn: async () => {
       return fetchPlaylist(cookie, playlist);
     },
     onSuccess: (data) => {
-      console.log(data?.data);
       setVideoList(data?.data);
     },
     onError: (err) => {
@@ -119,11 +173,11 @@ const UserContextProvider = ({ children }) => {
     }
   }, [videoList]);
 
-  useEffect(() => {
-    if (videoId) {
-      console.log(videoId);
-    }
-  }, [videoId]);
+  // useEffect(() => {
+  //   if (videoId) {
+  //     console.log(videoId);
+  //   }
+  // }, [videoId]);
 
   useEffect(() => {
     if (videoId && videoId.length > 0) {
@@ -206,6 +260,10 @@ const UserContextProvider = ({ children }) => {
         toggleSidebar,
         setToggleSidebar,
         setIsDeleted,
+        channelLoading,
+        channelError,
+        videoLoading,
+        videoError,
         // setNextPageToken,
         // setPrevPageToken,
         // nextPageTokenToSend,

@@ -9,7 +9,7 @@ function Sidebar() {
   const [img, setImg] = useState("");
   const [name, setName] = useState("");
 
-  const { result, toggleSidebar } = useContext(UserContext);
+  const { channelLoading, result, toggleSidebar } = useContext(UserContext);
 
   useEffect(() => {
     setImg(result?.data?.channel?.thumbnails?.high?.url);
