@@ -17,6 +17,7 @@ const Comment = () => {
   const [repliesToggle, setRepliesToggle] = useState(null);
   const [replyText, setReplyText] = useState("");
   const [commentsData, setCommentsData] = useState([]);
+  // const [refetch, setRefetch] = useState(false);
 
   const handleReplyClick = (id) => {
     setEditingCommentIndex(id === editingCommentIndex ? null : id);
@@ -30,22 +31,33 @@ const Comment = () => {
     setReplyText(e.target.value);
   };
 
+  const runFetchComments = async () => {
+    if (comments && comments.length > 0) {
+      const promises = comments.map(async (comment) => {
+        const commentData = await fetchComments(comment?.id);
+        return commentData;
+      });
+      return Promise.all(promises);
+    }
+    return [];
+  };
+
   const {
     error,
     isLoading,
+    refetch,
     data: singleComment,
   } = useQuery({
     queryKey: ["singleCommentData", comments],
     queryFn: async () => {
-      if (comments && comments.length > 0) {
-        const promises = comments.map(async (comment) => {
-          const commentData = await fetchComments(comment?.id);
-          return commentData;
-        });
-        return Promise.all(promises);
-      }
-      return [];
+      return runFetchComments();
     },
+    // staleTime: "Infinity",
+    refetchOnWindowFocus: false,
+    refetchIntervalInBackground: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    // refetchInterval: 50,
   });
 
   useEffect(() => {
@@ -73,6 +85,7 @@ const Comment = () => {
         }),
       }
     );
+
     const data = await postData.json();
 
     setCommentsData((previousData) => {
@@ -84,6 +97,9 @@ const Comment = () => {
       }
       return newData;
     });
+    // setTimeout(() => {
+    //   refetch();
+    // }, 10000);
   };
 
   if (isLoading) {
@@ -218,7 +234,7 @@ const Comment = () => {
                             index={index}
                             key={reply?.id}
                             reply={reply}
-                            handleReplyClick={handleReplyClick}
+                            handleCancelReplyBtn={handleReplyClick}
                             editingCommentIndex={editingCommentIndex}
                             replyText={replyText}
                             handleReplyTextChange={handleReplyTextChange}

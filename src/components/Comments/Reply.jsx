@@ -2,7 +2,7 @@
 const Reply = ({
   index,
   reply,
-  handleReplyClick,
+  handleCancelReplyBtn,
   editingCommentIndex,
   replyText,
   handleReplyTextChange,
@@ -32,7 +32,7 @@ const Reply = ({
           <p className="text-sm">{reply?.snippet?.textDisplay}</p>
 
           <button
-            onClick={() => handleReplyClick(reply?.id)}
+            onClick={() => handleCancelReplyBtn(reply?.id)}
             className="text-bold text-left mt-1"
           >
             REPLY
@@ -49,7 +49,7 @@ const Reply = ({
               />
               <div className="flex">
                 <button
-                  onClick={() => handleReplyClick(reply?.id)}
+                  onClick={() => handleCancelReplyBtn(reply?.id)}
                   className="ml-2"
                 >
                   Cancel
