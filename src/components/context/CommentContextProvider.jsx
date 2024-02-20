@@ -13,6 +13,7 @@ const CommentContextProvider = ({ children }) => {
   //   };
   useEffect(() => {
     if (result?.data?.channelId) {
+      console.log(result?.data?.channelId);
       setChannelId(result?.data?.channelId);
     }
   }, [result?.data?.channelId]);

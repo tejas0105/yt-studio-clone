@@ -25,13 +25,11 @@ const UserContextProvider = ({ children }) => {
     const cookieValue = document.cookie;
     if (cookieValue) {
       const splitCookie = cookieValue.split("=");
-      // console.log(splitCookie);
+      console.log(splitCookie);
       if (splitCookie[0] === "access_token") {
         const access_token = splitCookie[1].split(";")[0];
         setCookie(access_token);
       }
-    } else {
-      setCookie(undefined);
     }
   }, []);
 
@@ -39,23 +37,18 @@ const UserContextProvider = ({ children }) => {
     const cookieValue = document.cookie;
     if (cookieValue) {
       const splitCookie = cookieValue.split("=");
-      // console.log(splitCookie[2]);
-      // console.log(splitCookie[1].split(";")[1]);
-      if (splitCookie[1].split(";")[1] === " refresh_token") {
-        const refresh_token = splitCookie[2];
-        // console.log(refresh_token);
-        setRefreshToken(refresh_token);
-      }
+      if (splitCookie[1].split("; ")[1] === "refresh_token")
+        setRefreshToken(splitCookie[1].split("; ")[0]);
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (refreshToken) console.log(refreshToken);
-  // }, [refreshToken]);
+  useEffect(() => {
+    if (refreshToken) console.log(refreshToken);
+  }, [refreshToken]);
 
   useEffect(() => {
     if (cookie) {
-      console.log();
+      // console.log(cookie === undefined);
       setIsAccessTokenExpired(false);
     } else {
       setIsAccessTokenExpired(true);
@@ -76,7 +69,7 @@ const UserContextProvider = ({ children }) => {
   };
 
   const { mutateAsync, isError } = useMutation({
-    mutationKey: "fetchNewTokens",
+    mutationKey: ["fetchNewTokens"],
     mutationFn: async () => {
       return fetchNewTokens();
     },
@@ -84,6 +77,7 @@ const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (isAccessTokenExpired) {
+      console.log(isAccessTokenExpired);
       mutateAsync();
     }
   }, [isAccessTokenExpired]);
