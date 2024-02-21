@@ -7,13 +7,12 @@ const CommentContextProvider = ({ children }) => {
   const [comments, setComments] = useState([]);
   const [channelId, setChannelId] = useState("");
   // const [commentsData, setCommentsData] = useState([]);
-  const { cookie, result, videoList } = useContext(UserContext);
+  const { accessToken, result, videoList } = useContext(UserContext);
   //   const fetchComments = async () => {
   //     const response = await fetch();
   //   };
   useEffect(() => {
     if (result?.data?.channelId) {
-      console.log(result?.data?.channelId);
       setChannelId(result?.data?.channelId);
     }
   }, [result?.data?.channelId]);
@@ -48,9 +47,9 @@ const CommentContextProvider = ({ children }) => {
   // });
 
   const { mutateAsync } = useMutation({
-    mutationKey: ["fetchcomments", cookie, channelId],
+    mutationKey: ["fetchcomments", accessToken, channelId],
     mutationFn: () => {
-      return fetchCommentThreads(channelId, cookie);
+      return fetchCommentThreads(channelId, accessToken);
     },
     onSuccess: (data) => {
       setComments(data?.data);
@@ -58,10 +57,10 @@ const CommentContextProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    if (channelId && cookie) {
+    if (channelId && accessToken) {
       mutateAsync();
     }
-  }, [channelId, cookie]);
+  }, [channelId, accessToken]);
 
   // useEffect(() => {
   //   if (comment) {

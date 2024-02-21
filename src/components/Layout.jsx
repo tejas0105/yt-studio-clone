@@ -8,7 +8,7 @@ import Error from "./Error Components/NotAuthorized";
 import UserContext from "./context/UserContext";
 
 const Layout = () => {
-  const { channelLoading, result, cookie, toggleSidebar } =
+  const { channelLoading, result, accessToken, toggleSidebar } =
     useContext(UserContext);
   const [img, setImg] = useState("");
   const [userDetails, setUserDetails] = useState({
@@ -35,13 +35,13 @@ const Layout = () => {
   // }, [userDetails]);
 
   useEffect(() => {
-    if (cookie) {
-      console.log();
+    if (accessToken) {
+      // console.log(accessToken);
       setIsCookieExpired(false);
     } else {
       setIsCookieExpired(true);
     }
-  }, [cookie]);
+  }, [accessToken]);
 
   if (channelLoading) {
     return <Spinner />;

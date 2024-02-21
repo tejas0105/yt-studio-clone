@@ -1,29 +1,16 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AnalyticsContext from "./AnalyticsContext";
+import UserContext from "./UserContext";
 
 const AnalyticsContextProvider = ({ children }) => {
-  const [cookie, setCookie] = useState("");
+  const { accessToken } = useContext(UserContext);
   const [views, setViews] = useState([]);
-
-  useEffect(() => {
-    const cookieValue = document.cookie;
-
-    if (cookieValue) {
-      const splitCookie = cookieValue.split("=");
-
-      const cookies = splitCookie[1].split(";")[0];
-
-      setCookie(cookies);
-    } else {
-      setCookie(undefined);
-    }
-  }, []);
 
   useEffect(() => {
     try {
       const fetchData = async () => {
-        if (cookie) {
+        if (accessToken) {
           let currentDate = new Date();
           let endDate = `${currentDate.getFullYear()}-${(
             currentDate.getMonth() + 1
@@ -50,7 +37,7 @@ const AnalyticsContextProvider = ({ children }) => {
             }`,
             {
               headers: {
-                Authorization: `Bearer ${cookie}`,
+                Authorization: `Bearer ${accessToken}`,
                 Accept: "application/json",
               },
             }
@@ -63,7 +50,7 @@ const AnalyticsContextProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [cookie]);
+  }, [accessToken]);
 
   // useEffect(() => {
   //   console.log(views);

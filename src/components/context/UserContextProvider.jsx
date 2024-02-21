@@ -7,7 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 const UserContextProvider = ({ children }) => {
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const [result, setResult] = useState([]);
-  const [cookie, setCookie] = useState("");
+  const [accessToken, setAccessToken] = useState("");
   const [playlist, setPlayList] = useState("");
   const [videoList, setVideoList] = useState();
   const [videoId, setVideoId] = useState([]);
@@ -23,64 +23,64 @@ const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     const cookieValue = document.cookie;
-    if (cookieValue) {
-      const splitCookie = cookieValue.split("=");
-      console.log(splitCookie);
-      if (splitCookie[0] === "access_token") {
-        const access_token = splitCookie[1].split(";")[0];
-        setCookie(access_token);
-      }
+    if (cookieValue.split("=")[0] === "access_token") {
+      setAccessToken(cookieValue.split("=")[1].split("; ")[0]);
+      setRefreshToken(cookieValue.split("=")[2]);
     }
   }, []);
 
   useEffect(() => {
     const cookieValue = document.cookie;
-    if (cookieValue) {
-      const splitCookie = cookieValue.split("=");
-      if (splitCookie[1].split("; ")[1] === "refresh_token")
-        setRefreshToken(splitCookie[1].split("; ")[0]);
+    // console.log(cookieValue.split("="));
+    if (
+      cookieValue.split("=")[0] === "refresh_token" &&
+      !cookieValue.split("=")[1].split("; ")[0]
+    ) {
+      setAccessToken("");
+      setRefreshToken(cookieValue.split("=")[1]);
+    }
+    if (cookieValue.split("=")[0] === "refresh_token") {
+      setAccessToken(cookieValue.split("=")[2]);
+      setRefreshToken(cookieValue.split("=")[1].split("; ")[0]);
     }
   }, []);
 
   useEffect(() => {
-    if (refreshToken) console.log(refreshToken);
-  }, [refreshToken]);
+    console.log(accessToken);
+  }, [accessToken]);
 
   useEffect(() => {
-    if (cookie) {
-      // console.log(cookie === undefined);
-      setIsAccessTokenExpired(false);
-    } else {
+    if (accessToken === undefined) {
       setIsAccessTokenExpired(true);
+    } else {
+      setIsAccessTokenExpired(false);
     }
-  }, [cookie]);
-
-  const fetchNewTokens = async () => {
-    const resp = await fetch("http://localhost:3000/refresh_token", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        refresh_token: refreshToken,
-      }),
-    });
-    return resp.json();
-  };
-
-  const { mutateAsync, isError } = useMutation({
-    mutationKey: ["fetchNewTokens"],
-    mutationFn: async () => {
-      return fetchNewTokens();
-    },
-  });
+  }, [accessToken]);
 
   useEffect(() => {
-    if (isAccessTokenExpired) {
+    if (isAccessTokenExpired === true) {
       console.log(isAccessTokenExpired);
-      mutateAsync();
     }
   }, [isAccessTokenExpired]);
+
+  const refreshGetNewAcessToken = async () => {
+    const resp = await fetch("http://localhost:3000/refreshToken", {
+      headers: {
+        "Content-type": "application/json",
+        refresh_token: refreshToken,
+      },
+    });
+    console.log(await resp.json());
+  };
+
+  // useEffect(() => {
+  //   refreshGetNewAcessToken();
+  // }, []);
+
+  // const { mutateAsync, isError } = useMutation({
+  //   mutationKey: ["getNewTokens"],
+  //   mutationFn: async () => await refreshGetNewAcessToken(),
+  // });
 
   const fetchChannelData = async (cookie) => {
     if (cookie) {
@@ -99,9 +99,9 @@ const UserContextProvider = ({ children }) => {
     isLoading: channelLoading,
     isError: channelError,
   } = useQuery({
-    queryKey: ["channelDetails", cookie],
+    queryKey: ["channelDetails", accessToken],
     queryFn: async () => {
-      return fetchChannelData(cookie);
+      return fetchChannelData(accessToken);
     },
   });
 
@@ -138,9 +138,9 @@ const UserContextProvider = ({ children }) => {
     isLoading: videoLoading,
     isError: videoError,
   } = useMutation({
-    mutationKey: ["fetchvideos", cookie, playlist],
+    mutationKey: ["fetchvideos", accessToken, playlist],
     mutationFn: async () => {
-      return fetchPlaylist(cookie, playlist);
+      return fetchPlaylist(accessToken, playlist);
     },
     onSuccess: (data) => {
       setVideoList(data?.data);
@@ -150,10 +150,10 @@ const UserContextProvider = ({ children }) => {
     },
   });
   useEffect(() => {
-    if (cookie && playlist) {
+    if (accessToken && playlist) {
       fetchVideos();
     }
-  }, [cookie, playlist]);
+  }, [accessToken, playlist]);
 
   useEffect(() => {
     if (videoList && videoList.length > 0) {
@@ -183,7 +183,7 @@ const UserContextProvider = ({ children }) => {
           }`,
           {
             headers: {
-              Authorization: `Bearer ${cookie}`,
+              Authorization: `Bearer ${accessToken}`,
               Accept: "application/json",
             },
           }
@@ -193,7 +193,7 @@ const UserContextProvider = ({ children }) => {
       };
       getData();
     }
-  }, [cookie, videoId]);
+  }, [accessToken, videoId]);
 
   // useEffect(() => {
   //   const fetchDataNext = async () => {
@@ -248,7 +248,7 @@ const UserContextProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         result,
-        cookie,
+        accessToken,
         videoList,
         viewCount,
         toggleSidebar,

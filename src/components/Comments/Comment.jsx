@@ -11,7 +11,7 @@ import ErrorComponent from "../Error Components/ErrorComponent";
 
 const Comment = () => {
   const { comments, fetchComments } = useContext(CommentContext);
-  const { videoList, cookie } = useContext(UserContext);
+  const { videoList, accessToken } = useContext(UserContext);
 
   const [editingCommentIndex, setEditingCommentIndex] = useState(null);
   const [repliesToggle, setRepliesToggle] = useState(null);
@@ -73,7 +73,7 @@ const Comment = () => {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${cookie}`,
+          Authorization: `Bearer ${accessToken}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
