@@ -63,15 +63,15 @@ const UserContextProvider = ({ children }) => {
     }
   }, [isAccessTokenExpired]);
 
-  const refreshGetNewAcessToken = async () => {
-    const resp = await fetch("http://localhost:3000/refreshToken", {
-      headers: {
-        "Content-type": "application/json",
-        refresh_token: refreshToken,
-      },
-    });
-    console.log(await resp.json());
-  };
+  // const refreshGetNewAcessToken = async () => {
+  //   const resp = await fetch("http://localhost:3000/refreshToken", {
+  //     headers: {  
+  //       "Content-type": "application/json",
+  //       refresh_token: refreshToken,
+  //     },
+  //   });
+  //   console.log(await resp.json());
+  // };
 
   // useEffect(() => {
   //   refreshGetNewAcessToken();
