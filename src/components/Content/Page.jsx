@@ -125,9 +125,9 @@ export default function Page() {
     }
   }, [pages, viewCount?.items, cookie, deleteModal]);
 
-  // useEffect(() => {
-  //   if (pages) console.log("pages->", pages);
-  // }, [pages]);
+  useEffect(() => {
+    if (videoList) console.log(videoList);
+  }, [videoList]);
 
   // useEffect(() => {
   //   if (vidId) {

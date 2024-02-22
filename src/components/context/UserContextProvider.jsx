@@ -45,9 +45,9 @@ const UserContextProvider = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(accessToken);
-  }, [accessToken]);
+  // useEffect(() => {
+  //   console.log(accessToken);
+  // }, [accessToken]);
 
   useEffect(() => {
     if (accessToken === undefined) {
@@ -65,7 +65,7 @@ const UserContextProvider = ({ children }) => {
 
   // const refreshGetNewAcessToken = async () => {
   //   const resp = await fetch("http://localhost:3000/refreshToken", {
-  //     headers: {  
+  //     headers: {
   //       "Content-type": "application/json",
   //       refresh_token: refreshToken,
   //     },
@@ -107,6 +107,7 @@ const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (channelDetails) {
+      console.log(channelDetails);
       setResult(channelDetails);
       setPlayList(channelDetails?.data?.playlistID);
     }
@@ -143,6 +144,7 @@ const UserContextProvider = ({ children }) => {
       return fetchPlaylist(accessToken, playlist);
     },
     onSuccess: (data) => {
+      console.log(data?.data);
       setVideoList(data?.data);
     },
     onError: (err) => {
