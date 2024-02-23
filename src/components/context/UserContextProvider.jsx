@@ -82,16 +82,9 @@ const UserContextProvider = ({ children }) => {
   //   mutationFn: async () => await refreshGetNewAcessToken(),
   // });
 
-  const fetchChannelData = async (cookie) => {
-    if (cookie) {
-      const response = await fetch(`http://localhost:3000/getchannel`, {
-        headers: {
-          Authorization: `Bearer ${cookie}`,
-          Accept: "application/json",
-        },
-      });
-      return response.json();
-    }
+  const fetchChannelData = async () => {
+    const response = await fetch(`http://localhost:3000/getchannel`);
+    return await response.json();
   };
 
   const {
@@ -99,9 +92,9 @@ const UserContextProvider = ({ children }) => {
     isLoading: channelLoading,
     isError: channelError,
   } = useQuery({
-    queryKey: ["channelDetails", accessToken],
+    queryKey: ["channelDetails"],
     queryFn: async () => {
-      return fetchChannelData(accessToken);
+      return fetchChannelData();
     },
   });
 
@@ -113,21 +106,23 @@ const UserContextProvider = ({ children }) => {
     }
   }, [channelDetails]);
 
-  // useEffect(() => {
-  //   console.log(result);
-  // }, [result]);
+  useEffect(() => {
+    if (result && playlist) {
+      console.log("result->", result);
+      console.log("playlist->", playlist);
+    }
+  }, [playlist, result]);
 
-  const fetchPlaylist = async (cookie, playlist) => {
-    if (cookie && playlist) {
+  const fetchPlaylist = async (playlist) => {
+    if (playlist) {
       const playlistResponse = await fetch(`http://localhost:3000/getvideos`, {
         method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
         body: JSON.stringify({
           playlistID: playlist,
         }),
-        headers: {
-          Authorization: `Bearer ${cookie}`,
-          "Content-type": "application/json",
-        },
       });
       return playlistResponse.json();
       // setNextPageTokenToSend(playlistData?.nextPageToken);
@@ -139,12 +134,11 @@ const UserContextProvider = ({ children }) => {
     isLoading: videoLoading,
     isError: videoError,
   } = useMutation({
-    mutationKey: ["fetchvideos", accessToken, playlist],
+    mutationKey: ["fetchvideos", playlist],
     mutationFn: async () => {
-      return fetchPlaylist(accessToken, playlist);
+      return fetchPlaylist(playlist);
     },
     onSuccess: (data) => {
-      console.log(data?.data);
       setVideoList(data?.data);
     },
     onError: (err) => {
@@ -152,10 +146,10 @@ const UserContextProvider = ({ children }) => {
     },
   });
   useEffect(() => {
-    if (accessToken && playlist) {
+    if (playlist) {
       fetchVideos();
     }
-  }, [accessToken, playlist]);
+  }, [playlist]);
 
   useEffect(() => {
     if (videoList && videoList.length > 0) {
@@ -177,25 +171,23 @@ const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (videoId && videoId.length > 0) {
-      const newIDs = videoId.join("%2C");
+      const newIDs = videoId;
       const getData = async () => {
-        const response = await fetch(
-          `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${newIDs}&key=${
-            import.meta.env.VITE_API_KEY
-          }`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              Accept: "application/json",
-            },
-          }
-        );
+        const response = await fetch(`http://localhost:3000/getSingleVideo`, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            videoIds: newIDs,
+          }),
+        });
         const data = await response.json();
-        setViewCount(data);
+        setViewCount(data?.data);
       };
       getData();
     }
-  }, [accessToken, videoId]);
+  }, [videoId]);
 
   // useEffect(() => {
   //   const fetchDataNext = async () => {

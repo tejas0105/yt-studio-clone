@@ -46,9 +46,9 @@ const Layout = () => {
   if (channelLoading) {
     return <Spinner />;
   }
-  if (cookieExpired) {
-    return <Error />;
-  }
+  // if (cookieExpired) {
+  //   return <Error />;
+  // }
 
   return (
     <div className="layout">

@@ -34,6 +34,7 @@ export const columns = [
     header: "Videos",
     cell: ({ row }) => {
       let url = row?.original?.video;
+      console.log(row);
       return (
         <div className="flex items-center">
           <div className="img-div">

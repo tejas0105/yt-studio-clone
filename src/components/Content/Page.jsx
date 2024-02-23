@@ -12,7 +12,6 @@ export default function Page() {
   const {
     videoList,
     viewCount,
-    cookie,
     // nextPageTokenToSend,
     // prevPageTokenToSend,
     // setNextPageToken,
@@ -101,7 +100,6 @@ export default function Page() {
           link: `https://www.youtube.com/watch?v=${item?.contentDetails?.videoId}`,
           title: item?.snippet?.title,
           date: formattedDate,
-          cookie: cookie,
           videoTitle: item?.snippet?.title,
           changeDeleteModalState: (id) => {
             setDeleteModal(!deleteModal);
@@ -123,17 +121,15 @@ export default function Page() {
       });
       setData(newData);
     }
-  }, [pages, viewCount?.items, cookie, deleteModal]);
+  }, [pages, viewCount?.items, deleteModal]);
 
   useEffect(() => {
-    if (videoList) console.log(videoList);
-  }, [videoList]);
-
-  // useEffect(() => {
-  //   if (vidId) {
-  //     console.log(vidId);
-  //   }
-  // }, [vidId]);
+    if (vidId && videoList && viewCount) {
+      console.log("vidId->", vidId);
+      console.log("videoList->", videoList);
+      console.log("viewCount->", viewCount);
+    }
+  }, [vidId, videoList, viewCount]);
 
   const handleNextPage = () => {
     setCurrentPage((prevState) => {
